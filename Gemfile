@@ -15,7 +15,11 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'figaro'
 gem 'rails_12factor', group: :production
+gem 'devise'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'byebug', platform: :mri
