@@ -15,6 +15,7 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'figaro'
 gem 'rails_12factor', group: :production
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   gem 'byebug', platform: :mri
