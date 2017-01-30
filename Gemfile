@@ -23,6 +23,7 @@ gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'pry'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'launchy'
