@@ -256,6 +256,7 @@ Devise.setup do |config|
       api_secret = ENV["#{provider_name.upcase}_SECRET"]
       config.omniauth provider_name, api_key, api_secret
     end
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
