@@ -4,7 +4,7 @@
     <ul class="image-list signin-icons">
       <% resource_class.omniauth_providers.each do |provider| %>
         <li><%= link_to omniauth_authorize_path(resource_name, provider), :title => "Sign in with #{provider.to_s}" do %>
-          <%= image_tag "oauth_#{provider}.png", :alt => "Sign in with #{provider.to_s.titleize}" %><% end -%></li>
+          <%= image_tag "oauth_#{provider}.png", :alt => "Sign in with #{provider.to_s.titleize}", class: "auth-img" %><% end -%></li>
       <% end %>
     </ul>
   <% end %>
