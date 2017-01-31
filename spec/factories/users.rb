@@ -6,6 +6,8 @@ FactoryGirl.define do
     provider [:google, :twitter, :facebook, :linkedin].shuffle.pop
     uid "12345"
 
-    # factory :admin
+    factory :admin do
+      email ENV["MY_EMAIL"]
+    end
   end
 end
