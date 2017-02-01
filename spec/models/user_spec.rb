@@ -21,4 +21,16 @@ RSpec.describe User, type: :model do
       it { should validate_presence_of    :uid }
     end
   end
+
+  context "administrative priveleges" do
+    it "uses email address to determine role" do
+      user = create :admin
+      expect(user.admin?).to eq(true)
+    end
+
+    it "defaults to non admin" do
+      user = create :user
+      expect(user.admin?).to eq(false)
+    end
+  end
 end

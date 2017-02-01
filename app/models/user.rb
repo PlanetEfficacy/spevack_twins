@@ -14,6 +14,10 @@ class User < ApplicationRecord
   validates_presence_of   :provider
   validates_presence_of   :uid
 
+  def admin?
+    email == ENV["MY_EMAIL"]
+  end
+
   class << self
     def from_omniauth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
