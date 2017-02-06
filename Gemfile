@@ -20,6 +20,10 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-twitter'
+gem 'carrierwave'
+gem 'fog'
+gem 'mini_magick'
+gem 'faker'
 
 group :development, :test do
   gem 'byebug', platform: :mri

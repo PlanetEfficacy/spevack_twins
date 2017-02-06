@@ -1,0 +1,35 @@
+<div class="container">
+  <h3>New Photo of the Day</h3>
+  <div class="row">
+    <%= form_for @photo, multiple: true do |f| %>
+
+      <div class="input-field">
+        <%= f.label :title %>
+        <%= f.text_field :title %>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :caption %>
+        <%= f.text_area :caption, class: "materialize-textarea" %>
+      </div>
+
+      <%= f.label :date %>
+      <%= f.date_field :date, class: "datepicker"%>
+
+      <div class="file-field input-field">
+        <div class="btn btn-flat waves-effect waves-light cyan accent-2">
+          <span>File</span>
+          <%= f.file_field :image %>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+
+      <div class="input-field center-align">
+        <%= f.submit "Upload", class: "btn waves-effect waves-light cyan darken-3"  %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :photo do
-    title "MyString"
-    caption "MyString"
+    title "My title"
+    caption "My caption"
     date "2017-01-30"
-    image "MyString"
+    image { Faker::Placeholdit.image }
   end
 end
