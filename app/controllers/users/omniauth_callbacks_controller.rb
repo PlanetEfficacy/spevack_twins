@@ -26,7 +26,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def sign_in_with(provider_name)
       @user = User.from_omniauth(request.env["omniauth.auth"])
       sign_in @user
-      redirect_to photo_path(Photo.last)
-      set_flash_message(:notice, :success, kind: provider_name) if is_navigational_format?
+      redirect_to default_post_sign_in_path
+    end
+
+    def default_post_sign_in_path
+      current_user.admin? ? new_photo_path : photo_path(Photo.last)
     end
 end

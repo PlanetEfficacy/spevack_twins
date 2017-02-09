@@ -24,6 +24,7 @@ gem 'carrierwave'
 gem 'fog'
 gem 'mini_magick'
 gem 'faker'
+gem 'materialize-sass'
 
 group :development, :test do
   gem 'byebug', platform: :mri
