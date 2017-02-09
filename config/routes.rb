@@ -11,4 +11,10 @@ Rails.application.routes.draw do
   root 'photos#show', as: 'root'
 
   resources :photos, only: [:new, :create, :show]
+
+  namespace :api do
+    namespace :v1 do
+      resources :photos, only: [:index]
+    end
+  end
 end
