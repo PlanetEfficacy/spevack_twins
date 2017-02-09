@@ -96,3 +96,25 @@ def stub_linkedin
     }
   })
 end
+
+def stub_admin
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+    provider: "google",
+    uid: 1234,
+    info: {
+      name: "Jamie Lannister",
+      email: ENV["MY_EMAIL"],
+      image: "https://lh3.googleusercontent.com/-ZI4ojL91GxA/AAAAAAAAAAI/AAAAAAAAGVo/1F5PGMtlgHI/s50-c/photo.jpg",
+    },
+    credentials: {
+      token: "my_token",
+      refresh_token: "another_token",
+      expires_at: "1477945241",
+      expires: "true"
+    },
+    extra: {
+      local: "en"
+    }
+  })
+end

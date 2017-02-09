@@ -5,11 +5,11 @@ describe "user logs in with google oauth2" do
     photo = create :photo
     stub_google
     visit new_user_session_path
-    expect_page_to_have_sign_out_and_not_sign_in
+    expect_page_to_have_sign_in_and_not_sign_out
 
     click_link "Google"
 
-    expect_page_to_have_sign_in_and_not_sign_out
+    expect_page_to_have_sign_out_and_not_sign_in
     expect(current_path).to eq(photo_path(photo))
   end
 end
@@ -19,11 +19,11 @@ describe "user logs in with twitter" do
     photo = create :photo
     stub_twitter
     visit new_user_session_path
-    expect_page_to_have_sign_out_and_not_sign_in
+    expect_page_to_have_sign_in_and_not_sign_out
 
     click_link "Twitter"
 
-    expect_page_to_have_sign_in_and_not_sign_out
+    expect_page_to_have_sign_out_and_not_sign_in
     expect(current_path).to eq(photo_path(photo))
   end
 end
@@ -33,11 +33,11 @@ describe "user logs in with facebook" do
     photo = create :photo
     stub_facebook
     visit new_user_session_path
-    expect_page_to_have_sign_out_and_not_sign_in
+    expect_page_to_have_sign_in_and_not_sign_out
 
     click_link "Facebook"
 
-    expect_page_to_have_sign_in_and_not_sign_out
+    expect_page_to_have_sign_out_and_not_sign_in
     expect(current_path).to eq(photo_path(photo))
   end
 end
@@ -47,21 +47,34 @@ describe "user logs in with linkedin" do
     photo = create :photo
     stub_linkedin
     visit new_user_session_path
-    expect_page_to_have_sign_out_and_not_sign_in
+    expect_page_to_have_sign_in_and_not_sign_out
 
     click_link "LinkedIn"
 
-    expect_page_to_have_sign_in_and_not_sign_out
+    expect_page_to_have_sign_out_and_not_sign_in
     expect(current_path).to eq(photo_path(photo))
   end
 end
 
+describe "admin logs in" do
+  it "redirects user to photo create" do
+    stub_admin
+    visit new_user_session_path
+    expect_page_to_have_sign_in_and_not_sign_out
+
+    click_link "Google"
+
+    expect_page_to_have_sign_out_and_not_sign_in
+    expect(current_path).to eq(new_photo_path)
+  end
+end
+
 def expect_page_to_have_sign_in_and_not_sign_out
-  expect(page).to have_css("#sign-out")
-  expect(page).to_not have_css("#sign-in")
+  expect(page).to have_css("#sign-in")
+  expect(page).to_not have_css("#sign-out")
 end
 
 def expect_page_to_have_sign_out_and_not_sign_in
-  expect(page).to have_css("#sign-in")
-  expect(page).to_not have_css("#sign-out")
+  expect(page).to have_css("#sign-out")
+  expect(page).to_not have_css("#sign-in")
 end
