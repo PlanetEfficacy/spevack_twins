@@ -2,3 +2,13 @@
   width: 100px;
   height: auto;
 }
+
+.account-img {
+  width: 50px;
+  height: auto;
+  margin-top: 7px;
+}
+
+a#sign-out {
+  height: 64px;
+}
