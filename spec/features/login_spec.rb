@@ -7,7 +7,7 @@ describe "user logs in with google oauth2" do
     visit new_user_session_path
     expect_page_to_have_sign_out_and_not_sign_in
 
-    click_link "Sign in with Google Oauth2"
+    click_link "Google"
 
     expect_page_to_have_sign_in_and_not_sign_out
     expect(current_path).to eq(photo_path(photo))
@@ -21,7 +21,7 @@ describe "user logs in with twitter" do
     visit new_user_session_path
     expect_page_to_have_sign_out_and_not_sign_in
 
-    click_link "Sign in with Twitter"
+    click_link "Twitter"
 
     expect_page_to_have_sign_in_and_not_sign_out
     expect(current_path).to eq(photo_path(photo))
@@ -35,7 +35,7 @@ describe "user logs in with facebook" do
     visit new_user_session_path
     expect_page_to_have_sign_out_and_not_sign_in
 
-    click_link "Sign in with Facebook"
+    click_link "Facebook"
 
     expect_page_to_have_sign_in_and_not_sign_out
     expect(current_path).to eq(photo_path(photo))
@@ -49,7 +49,7 @@ describe "user logs in with linkedin" do
     visit new_user_session_path
     expect_page_to_have_sign_out_and_not_sign_in
 
-    click_link "Sign in with Linkedin"
+    click_link "LinkedIn"
 
     expect_page_to_have_sign_in_and_not_sign_out
     expect(current_path).to eq(photo_path(photo))
@@ -57,11 +57,11 @@ describe "user logs in with linkedin" do
 end
 
 def expect_page_to_have_sign_in_and_not_sign_out
-  expect(page).to have_content("Sign out")
-  expect(page).to_not have_content("Sign in")
+  expect(page).to have_css("#sign-out")
+  expect(page).to_not have_css("#sign-in")
 end
 
 def expect_page_to_have_sign_out_and_not_sign_in
-  expect(page).to have_content("Sign in")
-  expect(page).to_not have_content("Sign out")
+  expect(page).to have_css("#sign-in")
+  expect(page).to_not have_css("#sign-out")
 end

@@ -1,0 +1,14 @@
+<% if user_signed_in? %>
+  <li>
+    <%= link_to image_tag(current_user.image),
+                destroy_user_session_path,
+                method: :delete,
+                id: "sign-out" %>
+  </li>
+<% else %>
+  <li>
+    <%= link_to content_tag(:i, "account_circle", class: "material-icons"),
+                new_user_session_path,
+                id: "sign-in" %>
+  </li>
+<% end %>
