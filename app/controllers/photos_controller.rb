@@ -6,11 +6,11 @@ class PhotosController < ApplicationController
   def create
     @photo = Photo.new(photo_params)
     if @photo.save
-      redirect_to photo_path(@photo)
+      redirect_to photos_path
     end
   end
 
-  def show
+  def index
   end
 
   private

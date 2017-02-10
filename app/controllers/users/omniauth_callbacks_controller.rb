@@ -30,6 +30,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     def default_post_sign_in_path
-      current_user.admin? ? new_photo_path : photo_path(Photo.last)
+      current_user.admin? ? new_photo_path : photos_path
     end
 end

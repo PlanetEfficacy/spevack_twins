@@ -25,6 +25,7 @@ gem 'fog'
 gem 'mini_magick'
 gem 'faker'
 gem 'materialize-sass'
+gem 'react-rails'
 
 group :development, :test do
   gem 'byebug', platform: :mri
