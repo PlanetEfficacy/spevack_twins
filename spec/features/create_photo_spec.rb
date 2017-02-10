@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "admin uploads photo" do
   context "completes the photos#new form" do
-    it "redirects to the new photo's show page" do
+    it "redirects to the photo index page" do
       Fog.mock!
       Fog::Mock.delay = 0
       service = Fog::Storage.new({
@@ -21,7 +21,7 @@ RSpec.feature "admin uploads photo" do
       attach_file "photo[image]", Rails.root + "spec/fixtures/dummy.png"
       click_button "Upload"
 
-      expect(current_path).to eq(photo_path(Photo.last))
+      expect(current_path).to eq(photos_path)
     end
   end
 end

@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-RSpec.feature "guest visits photos#show" do
+RSpec.feature "guest visits photos#index" do
   it "redirects to login" do
-    photo = create :photo
-    visit photo_path(photo)
+    visit photos_path
     expect(current_path).to eq(new_user_session_path)
   end
 end

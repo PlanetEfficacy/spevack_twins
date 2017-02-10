@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe "user logs in with google oauth2" do
-  it "redirects user to photo show" do
+  it "redirects user to photo index" do
     photo = create :photo
     stub_google
     visit new_user_session_path
@@ -10,12 +10,12 @@ describe "user logs in with google oauth2" do
     click_link "Google"
 
     expect_page_to_have_sign_out_and_not_sign_in
-    expect(current_path).to eq(photo_path(photo))
+    expect(current_path).to eq(photos_path)
   end
 end
 
 describe "user logs in with twitter" do
-  it "redirects user to photo show" do
+  it "redirects user to photo index" do
     photo = create :photo
     stub_twitter
     visit new_user_session_path
@@ -24,12 +24,12 @@ describe "user logs in with twitter" do
     click_link "Twitter"
 
     expect_page_to_have_sign_out_and_not_sign_in
-    expect(current_path).to eq(photo_path(photo))
+    expect(current_path).to eq(photos_path)
   end
 end
 
 describe "user logs in with facebook" do
-  it "redirects user to photo show" do
+  it "redirects user to photo index" do
     photo = create :photo
     stub_facebook
     visit new_user_session_path
@@ -38,12 +38,12 @@ describe "user logs in with facebook" do
     click_link "Facebook"
 
     expect_page_to_have_sign_out_and_not_sign_in
-    expect(current_path).to eq(photo_path(photo))
+    expect(current_path).to eq(photos_path)
   end
 end
 
 describe "user logs in with linkedin" do
-  it "redirects user to photo show" do
+  it "redirects user to photo index" do
     photo = create :photo
     stub_linkedin
     visit new_user_session_path
@@ -52,7 +52,7 @@ describe "user logs in with linkedin" do
     click_link "LinkedIn"
 
     expect_page_to_have_sign_out_and_not_sign_in
-    expect(current_path).to eq(photo_path(photo))
+    expect(current_path).to eq(photos_path)
   end
 end
 
