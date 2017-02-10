@@ -45,3 +45,17 @@ describe Photo, "#by_year(year)", type: :model do
     end
   end
 end
+
+describe Photo, "#first_of_the_month(year)", type: :model do
+  context "when the class method first_of_the_month is invoked" do
+    it "returns the first photo for each month of the selected year" do
+      create :photo, date: "2016-11-30"
+      subject = create :photo, date: "2016-12-1"
+      create :photo, date: "2017-1-1"
+
+      result = Photo.first_of_the_month("2016")
+      expect(result.length).to eq(1)
+      expect(result.first).to eq(subject)
+    end
+  end
+end
