@@ -29,3 +29,19 @@ RSpec.describe Photo, type: :model do
     end
   end
 end
+
+describe Photo, "#by_year(year)", type: :model do
+  context "when the class method by_year is invoked" do
+    it "returns all the photos in a given year" do
+      create :photo, date: "2016-11-30"
+      create :photo, date: "2016-12-1"
+      create :photo, date: "2015-12-31"
+      create :photo, date: "2017-1-1"
+
+      result = Photo.by_year("2016").pluck(:date)
+      expect(result.length).to eq(2)
+      expect(result).to_not include("2015-12-31")
+      expect(result).to_not include("2017-1-1")
+    end
+  end
+end
