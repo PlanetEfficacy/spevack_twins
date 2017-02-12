@@ -7,17 +7,25 @@ class Photo < ApplicationRecord
 
   default_scope { order(date: :desc) }
 
-  def self.by_year(year)
-    where(date: full_year_range(year))
-  end
+  # def self.by_year(year)
+  #   where(date: full_year_range(year))
+  # end
 
   def self.first_of_the_month(year)
-    result = where("date IN (?)", first_of_the_month_dates(year))
+    where("date IN (?)", first_of_the_month_dates(year)).select('distinct on (date) *')
+  end
+
+  def self.by_year_and_month(year, month)
+    where(date: full_month_range(year, month))
   end
 
   private
   def self.full_year_range(year)
     Date.new(year.to_i,1,1)...Date.new(year.to_i + 1,1,1)
+  end
+
+  def self.full_month_range(year, month)
+    Date.new(year.to_i, month.to_i, 1)...Date.new(year.to_i, month.to_i + 1, 1)
   end
 
   def self.first_of_the_month_dates(year)

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'photos#index', as: 'root'
 
-  resources :photos, only: [:new, :create, :index]
+  resources :photos, only: [:new, :create, :index, :show]
 
   namespace :year do
     resources :photos, only: [:index]

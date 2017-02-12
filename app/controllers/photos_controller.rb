@@ -13,6 +13,12 @@ class PhotosController < ApplicationController
   def index
   end
 
+  def show
+    @photo = Photo.find(params[:id])
+    @photos = Photo.all
+    render component: 'App', props: { photo: @photo, photos: @photo }, tag: 'span', class: 'todo'
+  end
+
   private
 
   def photo_params
