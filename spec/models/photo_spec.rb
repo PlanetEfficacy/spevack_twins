@@ -30,21 +30,23 @@ RSpec.describe Photo, type: :model do
   end
 end
 
-# describe Photo, "#by_year(year)", type: :model do
-#   context "when the class method by_year is invoked" do
-#     it "returns all the photos in a given year" do
-#       create :photo, date: "2016-11-30"
-#       create :photo, date: "2016-12-1"
-#       create :photo, date: "2015-12-31"
-#       create :photo, date: "2017-1-1"
-#
-#       result = Photo.by_year("2016").pluck(:date)
-#       expect(result.length).to eq(2)
-#       expect(result).to_not include("2015-12-31")
-#       expect(result).to_not include("2017-1-1")
-#     end
-#   end
-# end
+describe Photo, "#one_per_year", type: :model do
+  context "when the class method one_per_year is invoked" do
+    it "returns one photo per year" do
+      create :photo, date: "2016-11-30"
+      create :photo, date: "2016-1-1"
+      create :photo, date: "2015-12-29"
+      create :photo, date: "2015-1-1"
+      create :photo, date: "2017-1-1"
+
+      result = Photo.one_per_year.pluck(:date)
+      expect(result.length).to eq(3)
+      expect(result).to_not include("2015-12-29")
+      expect(result).to_not include("2016-1-1")
+      expect(result).to_not include("2017-1-1")
+    end
+  end
+end
 
 describe Photo, "#first_of_the_month(year)", type: :model do
   context "when the class method first_of_the_month is invoked" do

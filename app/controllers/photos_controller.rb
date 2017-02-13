@@ -14,14 +14,18 @@ class PhotosController < ApplicationController
   end
 
   def show
-    @photo = Photo.find(params[:id])
     @photos = Photo.all
-    render component: 'App', props: { photo: @photo, photos: @photo }, tag: 'span', class: 'todo'
+    @photo = Photo.find(params[:id])
+    render_photo_show
   end
 
   private
 
   def photo_params
     params.require(:photo).permit(:title, :caption, :date, :image)
+  end
+
+  def render_photo_show
+    render component: 'App', props: { photo: @photo, photos: @photos, componentName: "PhotoShow" }, tag: 'span', class: 'todo'
   end
 end

@@ -1,0 +1,5 @@
+<% if user_signed_in? %>
+  <%= link_to "Spevack Twins", photos_path, class: "brand-logo" %>
+<% else %>
+  <%= link_to "Spevack Twins", new_user_session_path, class: "brand-logo" %>
+<% end %>

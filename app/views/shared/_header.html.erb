@@ -1,17 +1,9 @@
-<ul id="dropdown1" class="dropdown-content">
-  <li><%= link_to "2017", year_photos_path(year: "2017") %></li>
-  <li><%= link_to "2016", year_photos_path(year: "2016") %></li>
-  <li><%= link_to "2015", year_photos_path(year: "2015") %></li>
-</ul>
 <nav>
   <div class="container">
     <div class="nav-wrapper">
-      <%= link_to "Spevack Twins", photos_path, class: "brand-logo" %>
+      <%= render "shared/conditional_logo_link" %>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="badges.html"><i class="material-icons">favorite</i></a></li>
-        <li><a href="sass.html"><i class="material-icons">search</i></a></li>
-        <li><a href="collapsible.html" class="dropdown-button" data-activates="dropdown1"><i class="material-icons">collections</i></a></li>
-        <%= render 'shared/signin_or_out' %>
+        <%= render "shared/signin_or_out" %>
       </ul>
     </div>
   </div>

@@ -1,6 +1,6 @@
 class PhotoList extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     // this.state = { photos: this.props.photos }
     // console.log(this.props.photos[0])
   }
