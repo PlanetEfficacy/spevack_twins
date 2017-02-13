@@ -39,14 +39,23 @@ class App extends React.Component {
   }
 
   handleBrowse() {
-    
+    $.getJSON('/api/v1/photos/one-per-year', (response) => {
+      this.setState({ filteredPhotos: response, componentName: "PhotoYearList"})
+    })
   }
 
+  handleYearClick() {
+    // $.getJSON('/api/v1/photos/one-per-year', (response) => {
+    //   debugger
+    //   this.setState({ filteredPhotos: response, componentName: "PhotoYearList"})
+    // })
+  }
 
   render () {
-    if (this.state.componentName === "PhotoList") {
+    if (this.state.componentName === "PhotoYearList") {
       return (
-        <PhotoList photos={this.state.photos} />
+        <PhotoList photos={this.state.filteredPhotos}
+                   handleClick={this.handleYearClick}/>
       )
     }
     if (this.state.componentName === "PhotoShow") {

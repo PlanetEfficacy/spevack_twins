@@ -14,7 +14,6 @@ class PhotoList extends React.Component {
     });
   }
 
-
   properMonth(date) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     index = parseInt(date.split("-")[1]) - 1
@@ -26,13 +25,11 @@ class PhotoList extends React.Component {
   }
 
   photos() {
-    let storedPhotos = this.state ? this.state.photos : this.props.photos
-    return storedPhotos.map((photo) => {
+    return this.props.photos.map((photo) => {
       return (
         <SmallPhoto key={photo.id}
                     photo={photo}
-                    date={ this.state ? photo.date : this.properMonth(photo.date) }
-                    handleClick={ this.state ? this.getPhotoShow(photo.id) : this.getPhotosForMonth.bind(this)}/>
+                    date={ this.properMonth(photo.date) } />
       );
     })
   }

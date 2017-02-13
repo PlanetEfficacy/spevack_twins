@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe "GET api/v1/photos", type: :request do
-  it "returns all photos as json" do
+describe "GET api/v1/photos/one-per-year", type: :request do
+  it "returns one photo per year as json" do
     photos = double
     allow(Photo).to receive(:one_per_year).and_return(photos)
     user = create :user

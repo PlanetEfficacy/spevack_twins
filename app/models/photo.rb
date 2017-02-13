@@ -13,7 +13,7 @@ class Photo < ApplicationRecord
     where("date IN (?)", first_of_the_year_dates).select('distinct on (date) *')
   end
 
-  def self.first_of_the_month(year)
+  def self.one_per_month(year)
     where("date IN (?)", first_of_the_month_dates(year)).select('distinct on (date) *')
   end
 

@@ -22,7 +22,8 @@ Rails.application.routes.draw do
       resources :photos, only: [:index]
 
       namespace :photos do
-        get 'one-per-year', to: 'one_per_year#index'
+        get 'one-per-year',   to: 'one_per_year#index'
+        get 'one-per-month',  to: 'one_per_month#index'
       end
     end
   end
