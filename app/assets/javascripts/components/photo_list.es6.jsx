@@ -5,6 +5,10 @@ class PhotoList extends React.Component {
     // console.log(this.props.photos[0])
   }
 
+  componentDidMount() {
+    console.log(`PhotoList has mounted ${this.props.photos.length} photos!`)
+  }
+
   getPhotosForMonth(date) {
     const splitDate = date.split("-")
     const year = splitDate[0]
@@ -20,25 +24,55 @@ class PhotoList extends React.Component {
     return months[index];
   }
 
+  photoYear(photo) {
+    return photo.date.split("-")[0]
+  }
+
+  photoMonth(photo) {
+    return photo.date.split("-")[1]
+  }
+
   getPhotoShow(id) {
     window.location = '/photos/' + id;
   }
 
-  photos() {
-    return this.props.photos.map((photo) => {
-      return (
-        <SmallPhoto key={photo.id}
-                    photo={photo}
-                    date={ this.properMonth(photo.date) } />
-      );
-    })
+  smallPhotoDate(photo) {
+    if(this.props.config.smallPhotoType === "year") {
+      return this.photoYear(photo)
+    } else if (this.props.config.smallPhotoType === "month") {
+      return this.properMonth(photo.date)
+    } else if (this.props.config.smallPhotoType === "day") {
+      return photo.date
+    }
+  }
+
+  clickHandler(photo) {
+    console.log("In photo list, handling small photo click")
+    if(this.props.config.smallPhotoType === "year") {
+      console.log('assigning year click handler')
+      this.props.config.handleClick(this.photoYear(photo))
+    } else if (this.props.config.smallPhotoType === "month") {
+      console.log('assigning month click handler')
+      this.props.config.handleClick(this.photoYear(photo), this.photoMonth(photo))
+    } else if (this.props.config.smallPhotoType === "day") {
+      console.log('assigning day click handler')
+      this.props.config.handleClick(photo)
+    }
   }
 
   render () {
+    console.log("PhotoList.render() has just been invoked!")
     return (
       <div className="container">
-        <h4 className="center-align">Select Month</h4>
-        {this.photos()}
+        <h4 className="center-align">{ this.props.config.listHeader }</h4>
+        { this.props.photos.map((photo) => {
+            return (
+              <SmallPhoto key={ photo.id }
+                          photo={ photo }
+                          date={ this.smallPhotoDate(photo) }
+                          handleClick={ this.clickHandler.bind(this) } />
+            );
+        }.bind(this)) }
       </div>
     )
   }
