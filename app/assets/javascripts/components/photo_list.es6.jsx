@@ -1,10 +1,4 @@
 class PhotoList extends React.Component {
-  constructor(props) {
-    super(props)
-    // this.state = { photos: this.props.photos }
-    // console.log(this.props.photos[0])
-  }
-
   componentDidMount() {
     console.log(`PhotoList has mounted ${this.props.photos.length} photos!`)
   }
@@ -37,26 +31,33 @@ class PhotoList extends React.Component {
   }
 
   smallPhotoDate(photo) {
-    if(this.props.config.smallPhotoType === "year") {
-      return this.photoYear(photo)
-    } else if (this.props.config.smallPhotoType === "month") {
-      return this.properMonth(photo.date)
-    } else if (this.props.config.smallPhotoType === "day") {
-      return photo.date
+    switch (this.props.config.smallPhotoType) {
+      case 'year':
+        this.photoYear(photo)
+        break;
+      case 'month':
+        this.properMonth(photo.date)
+        break;
+      case 'day':
+        photo.date
+        break;
     }
   }
 
   clickHandler(photo) {
-    console.log("In photo list, handling small photo click")
-    if(this.props.config.smallPhotoType === "year") {
-      console.log('assigning year click handler')
-      this.props.config.handleClick(this.photoYear(photo))
-    } else if (this.props.config.smallPhotoType === "month") {
-      console.log('assigning month click handler')
-      this.props.config.handleClick(this.photoYear(photo), this.photoMonth(photo))
-    } else if (this.props.config.smallPhotoType === "day") {
-      console.log('assigning day click handler')
-      this.props.config.handleClick(photo)
+    switch (this.props.config.smallPhotoType) {
+      case 'year':
+        console.log('assigning year click handler')
+        this.props.config.handleClick(this.photoYear(photo))
+        break;
+      case 'month':
+        console.log('assigning month click handler')
+        this.props.config.handleClick(this.photoYear(photo), this.photoMonth(photo))
+        break;
+      case 'day':
+        console.log('assigning day click handler')
+        this.props.config.handleClick(photo)
+        break;
     }
   }
 
