@@ -11984,19 +11984,38 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   }
 }
 /* line 1, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
-.auth-img {
-  width: 100px;
-  height: auto;
-}
-
-/* line 6, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
 .account-img {
   width: 50px;
   height: auto;
   margin-top: 7px;
 }
 
-/* line 12, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
+/* line 7, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
 a#sign-out {
   height: 64px;
+}
+
+/* line 11, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
+.main-photo, .photo-list {
+  margin-top: 32px;
+}
+
+/* line 15, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
+.small-image-card {
+  margin: 10px;
+  background-color: black;
+  width: 300px;
+  height: 350px;
+  display: inline-block;
+  /* makes it fit in like an <img> */
+  background-size: cover;
+  /* or contain */
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("https://00e9e64bac034878d7aa0063bc167dee83a0c772569138e2a1-apidata.googleusercontent.com/download/storage/v1/b/photo-of-the-day/o/development%2Fimages%2F1%2F2016-10-15-photo-1486752419?qk=AD5uMEt7peNP-tM2iL74dl1G2ruTNL6GrKobyjFCHtVXlR1Qn6Cx7RrFX3No4AL743ZmhHh5eg2ABOnF7iaTqqdOhKpN49dDZEhMx3cAmGNJwZ0B80sAdyYJnE3LxBUlVo2YGfkfUcL2oLMkf7T6d9v3JkZmaee8zUpfmU_Ujm1Q7O-n6wNAEz1xmRzrP76u2cMm2hnUwP54ZY9Y0vwk7tluTvxOb-TaqSRc-8AtNYgLr__ka8kcspiRTeYn9Q84ZD55fvrKSuoY9WESvuPUuMwO3iRgLgf4UnjnlsB0VKPMaypD5mVXKtcRa-mncuOR3vG7Uk3ytccUMuqzloVFId2pU6pLz8gwYXwCNKTOqLTYdIGSl41ZEzJu4BYbKXrhiB4qZ6p7GDATtU_CAmQS3aPdvmTsdhQZKmQIylYxb7sLp_sXelHo4gPv_dg_aI4zehjZnsbnSiHbN3M39QCv367wTTA2W3NWbdE-89QSXkT3tygtUYUXSjEHrN8Z-d8B9EAaQWmRIosjQvxCYfKuG8vNFZ2cuHRrFM0K4_WhCyTn_I1Yo3V5S0aVibqS2s0KTdI4zLDxdOiy_G1QFva0ZkEpEVEIZe2K5LjcMOKKJ2RbW0K3JjiCmXZkBGHLyiK61WToKGe49JoPqqKSjYh6xwjfeLm-n_V47UvNS33eyHQn7dpatdI4SzNTmJYti8dl88eGUzhCCXzZ7pF3RrkgOzBSnDv9H3Ukotwa0t2JT0B646d6rPOBeK7VX63OcSm1w5-hD7sHIpqqFG4snTobfrwabcZ0yTqVIPwxrJDpTNMIGW7cDNgfBrr-nvMPlVaBphobGo4NUTaC8J6_TXfeatSJZjXwu09FvA");
+}
+
+/* line 27, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
+.small-photo-date {
+  margin-left: 10px;
 }
