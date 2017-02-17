@@ -40,6 +40,7 @@ describe Photo, "#one_per_year", type: :model do
       create :photo, date: "2017-1-1"
 
       result = Photo.one_per_year.pluck(:date)
+      
       expect(result.length).to eq(3)
       expect(result).to_not include("2015-12-29")
       expect(result).to_not include("2016-1-1")
