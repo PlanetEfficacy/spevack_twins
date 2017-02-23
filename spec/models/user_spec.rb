@@ -22,6 +22,10 @@ RSpec.describe User, type: :model do
     end
   end
 
+  context "associations" do
+    it { should have_many(:comments).dependent(:destroy) }
+  end
+
   context "administrative priveleges" do
     it "uses email address to determine role" do
       user = create :admin

@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :omniauth_providers => [:twitter, :facebook, :linkedin, :google_oauth2,
                                   *(:developer if Rails.env.development?)]
 
+  has_many :comments, dependent: :destroy
+
   validates_uniqueness_of :email
 
   validates_presence_of   :email
@@ -13,6 +15,7 @@ class User < ApplicationRecord
   validates_presence_of   :image
   validates_presence_of   :provider
   validates_presence_of   :uid
+
 
   def admin?
     email == ENV["MY_EMAIL"]

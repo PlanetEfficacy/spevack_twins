@@ -1,21 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Photo, type: :model do
-  context "valid factory" do
+  describe "valid factory" do
     it "has a valid factory" do
       expect(build(:photo)).to be_valid
     end
   end
 
-  context "validations" do
-    context "presence" do
+  describe "validations" do
+    describe "presence" do
       it { should validate_presence_of    :title }
       it { should validate_presence_of    :caption }
       it { should validate_presence_of    :date }
     end
   end
 
-  context "scopes" do
+  describe "associations" do
+    it { should have_many(:comments).dependent(:destroy) }
+  end
+
+  describe "scopes" do
     it "orders by date from latest to earliest" do
       photo_1 = create :photo, date: Date.new(2016,1,1)
       photo_2 = create :photo, date: Date.new(2017,1,1)
@@ -40,7 +44,7 @@ describe Photo, "#one_per_year", type: :model do
       create :photo, date: "2017-1-1"
 
       result = Photo.one_per_year.pluck(:date)
-      
+
       expect(result.length).to eq(3)
       expect(result).to_not include("2015-12-29")
       expect(result).to_not include("2016-1-1")
