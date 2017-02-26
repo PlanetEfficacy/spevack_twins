@@ -26,6 +26,7 @@ gem 'mini_magick'
 gem 'faker'
 gem 'materialize-sass'
 gem 'react-rails'
+gem 'active_model_serializers', '~> 0.10.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri

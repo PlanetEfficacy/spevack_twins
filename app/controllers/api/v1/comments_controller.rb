@@ -33,6 +33,6 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def comment_params
-    { photo: photo, user: current_user, body: params[:comment][:body] }
+    { commentable: photo, user: current_user, body: params[:comment][:body] }
   end
 end

@@ -5,6 +5,7 @@ class App extends React.Component {
     this.state = {
       allPhotos: [],
       photo: {},
+      comments: [],
       componentName: 'PhotoShow',
       photoIndex: 0,
       filteredPhotos: [],
@@ -22,12 +23,26 @@ class App extends React.Component {
     this.getPhotos(firstPhoto)
   }
 
+  getComments(photo) {
+    $.getJSON(`/api/v1/photos/${photo.id}/comments`, (response) => {
+      this.setState({ comments: response })
+    })
+  }
+
+  handleNewComment(comment) {
+    const comments = this.state.comments.push(comment)
+    this.setState({ comments: comments })
+  }
+
   getPhotos(index) {
     $.getJSON('/api/v1/photos.json', (response) => {
       this.setState({ allPhotos:  response,
                       photo:      response[index],
                       photoIndex: index })
-    });
+    })
+    .done(() => {
+      this.getComments(this.state.photo)
+    })
   }
 
   decrementPhotoIndex() {
@@ -36,6 +51,7 @@ class App extends React.Component {
       this.setState({ photoIndex: index,
                       photo:      this.state.allPhotos[index] })
     }
+    // this.getComments();
   }
 
   incrementPhotoIndex() {
@@ -44,6 +60,7 @@ class App extends React.Component {
       this.setState({ photoIndex: index,
                       photo:      this.state.allPhotos[index] })
     }
+    // this.getComments();
   }
 
   handleBrowse() {
@@ -120,7 +137,7 @@ class App extends React.Component {
   }
 
   render () {
-    console.log("App.render() has just been invoked!")
+    // console.log("App.render() has just been invoked!")
     if (this.state.componentName === "PhotoList") {
       return (
         <div>
@@ -140,7 +157,10 @@ class App extends React.Component {
                       photoIndex={ this.state.photoIndex }
                       currentPhoto={ this.state.photo }
                       forward={ this.decrementPhotoIndex.bind(this) }
-                      back={ this.incrementPhotoIndex.bind(this) } />
+                      back={ this.incrementPhotoIndex.bind(this) }
+                      user={ this.props.user }
+                      handleNewComment={ this.handleNewComment.bind(this) }
+                      comments={ this.state.comments } />
         </div>
       )
     }

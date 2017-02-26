@@ -32,7 +32,7 @@ describe "POST api/v1/photo/:id/comments", type: :request do
 
   it "returns the newly posted comment for a given photo" do
     allow(Photo).to receive(:find).with('1').and_return(photo)
-    allow(Comment).to receive(:new).with(photo: photo, user: user, body: 'pants').and_return(comment)
+    allow(Comment).to receive(:new).with(commentable: photo, user: user, body: 'pants').and_return(comment)
     expect(comment).to receive(:save).and_return(true)
     sign_in user
 
@@ -60,7 +60,7 @@ describe "PATCH api/v1/photo/:id/comments/:id", type: :request do
   it "returns the newly updated comment for a given photo" do
     allow(Photo).to receive(:find).with('1').and_return(photo)
     allow(Comment).to receive(:find).with('1').and_return(comment)
-    expect(comment).to receive(:update).with(photo: photo, user: user, body: 'pants').and_return(comment)
+    expect(comment).to receive(:update).with(commentable: photo, user: user, body: 'pants').and_return(comment)
     expect(comment).to receive(:save).and_return(true)
     sign_in user
 

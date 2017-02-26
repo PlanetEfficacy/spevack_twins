@@ -68,7 +68,6 @@ describe Photo, "#one_per_month(year)", type: :model do
   end
 end
 
-
 describe Photo, "#by_year_and_month(year, month)", type: :model do
   context "when the class method by_year_and_month is invoked" do
     it "returns all the photos in a given year month pair" do
