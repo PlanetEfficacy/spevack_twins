@@ -3,6 +3,4 @@ class UserSerializer < ActiveModel::Serializer
               :email,
               :name,
               :image
-
-  has_many    :comments
 end

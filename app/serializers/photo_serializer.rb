@@ -5,9 +5,5 @@ class PhotoSerializer < ActiveModel::Serializer
               :date,
               :image,
               :created_at,
-              :updated_at,
-              :comments
-
-  has_many :comments
-
+              :updated_at
 end

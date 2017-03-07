@@ -10,10 +10,14 @@ class PhotoShow extends React.Component {
       <div>
         <MainPhoto  photo={ photo } />
         <NavigationButtons forward={ this.props.forward } back={ this.props.back } />
-        <CommentList comments={ this.props.comments }
-                     user={ this.props.user }
-                     photo={ photo }
-                     handleNewComment={ this.handleNewComment.bind(this) }/>
+        <CommentList
+          comments={ this.props.comments }
+          user={ this.props.user }
+          photo={ photo }
+          handleNewComment={ this.handleNewComment.bind(this) }
+          handleDeleteComment={ this.props.handleDeleteComment }
+          handleEditComment={ this.props.handleEditComment }
+        />
         <BigButton  icon="favorite"/>
       </div>
     )

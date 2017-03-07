@@ -5,7 +5,6 @@ class SmallPhoto extends React.Component {
   }
 
   _handleClick() {
-    console.log('Small photo clicked!')
     this.props.handleClick(this.props.photo)
   }
 
@@ -16,7 +15,6 @@ class SmallPhoto extends React.Component {
   }
 
   render () {
-    console.log("SmallPhoto.render() has just been invoked!")
     return (
       <a href="#" onClick={ this._handleClick }>
         <div  className="small-image-card z-depth-2"

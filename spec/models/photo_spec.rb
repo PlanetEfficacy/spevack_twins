@@ -71,8 +71,8 @@ end
 describe Photo, "#by_year_and_month(year, month)", type: :model do
   context "when the class method by_year_and_month is invoked" do
     it "returns all the photos in a given year month pair" do
-      photo_1 = create :photo, date: "2016-11-30"
-      photo_2 = create :photo, date: "2016-11-2"
+      create :photo, date: "2016-11-30"
+      create :photo, date: "2016-11-2"
       create :photo, date: "2015-11-30"
       create :photo, date: "2016-12-1"
 

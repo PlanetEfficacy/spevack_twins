@@ -8,22 +8,28 @@ class CommentList extends React.Component {
     const comments = this.props.comments || [];
     return comments.map((comment) => {
       return (
-        <Comment comment={comment} />
+        <Comment
+          comment={ comment }
+          key={ comment.id }
+          user={ this.props.user }
+          handleDeleteComment={ this.props.handleDeleteComment }
+          handleEditComment={ this.props.handleEditComment }
+        />
       );
     })
   }
 
   render () {
 
-
-
     return (
       <div className="main-photo row">
         <div className="col s12 m6 offset-m3">
           <div className="card">
-            <NewCommentBox user={this.props.user}
-                           photo={this.props.photo }
-                           handleNewComment={ this.handleNewComment.bind(this) }/>
+            <NewCommentBox
+              handleNewComment={ this.handleNewComment.bind(this) }
+              photo={this.props.photo }
+              user={this.props.user}
+            />
             { this.renderComments() }
           </div>
         </div>
