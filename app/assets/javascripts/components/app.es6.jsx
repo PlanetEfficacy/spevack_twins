@@ -5,6 +5,7 @@ class App extends React.Component {
     this.state = {
       allPhotos: [],
       photo: {},
+      comments: [],
       componentName: 'PhotoShow',
       photoIndex: 0,
       filteredPhotos: [],
@@ -15,6 +16,13 @@ class App extends React.Component {
         listHeader: ''
       }
     }
+
+    this.incrementPhotoIndex = this.incrementPhotoIndex.bind(this)
+    this.decrementPhotoIndex = this.decrementPhotoIndex.bind(this)
+    this.handleBrowse = this.handleBrowse.bind(this)
+    this.handleDeleteComment = this.handleDeleteComment.bind(this)
+    this.handleEditComment = this.handleEditComment.bind(this)
+    this.handleNewComment = this.handleNewComment.bind(this)
   }
 
   componentDidMount() {
@@ -22,19 +30,35 @@ class App extends React.Component {
     this.getPhotos(firstPhoto)
   }
 
+  getComments(photo) {
+    $.getJSON(`/api/v1/photos/${photo.id}/comments`, (response) => {
+      this.setState({ comments: response })
+    })
+  }
+
+  handleNewComment(comment) {
+    const comments = this.state.comments.push(comment)
+    this.setState({ comments: comments })
+  }
+
   getPhotos(index) {
     $.getJSON('/api/v1/photos.json', (response) => {
       this.setState({ allPhotos:  response,
                       photo:      response[index],
                       photoIndex: index })
-    });
+    })
+    .done(() => {
+      this.getComments(this.state.photo)
+    })
   }
 
   decrementPhotoIndex() {
     if(this.state.photoIndex > 0) {
       const index = this.state.photoIndex - 1;
       this.setState({ photoIndex: index,
-                      photo:      this.state.allPhotos[index] })
+                      photo:      this.state.allPhotos[index],
+                      comments:   [] })
+      this.getComments(this.state.allPhotos[index])
     }
   }
 
@@ -42,14 +66,14 @@ class App extends React.Component {
     if(this.state.photoIndex < this.state.allPhotos.length) {
       const index = this.state.photoIndex + 1;
       this.setState({ photoIndex: index,
-                      photo:      this.state.allPhotos[index] })
+                      photo:      this.state.allPhotos[index],
+                      comments:   [] })
+      this.getComments(this.state.allPhotos[index])
     }
   }
 
   handleBrowse() {
-    console.log("Getting one per year photos")
     $.getJSON('/api/v1/photos/one-per-year', (response) => {
-      console.log(response)
       this.setState(
         {
           filteredPhotos: response,
@@ -65,9 +89,7 @@ class App extends React.Component {
   }
 
   handleYearClick(year) {
-    console.log("Getting all photos for month " + year)
     $.getJSON(`/api/v1/photos/one-per-month?year=${year}`, (response) => {
-      console.log(response)
       this.setState(
         {
           filteredPhotos: response,
@@ -85,9 +107,7 @@ class App extends React.Component {
   handleMonthClick(year, month) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let properMonth = months[parseInt(month) - 1];
-    console.log(`Getting all photos for ${month} ${year}`)
     $.getJSON(`${this.state.root}/all-month-year?year=${year}&month=${month}`, (response) => {
-      console.log(response)
       this.setState(
         {
           filteredPhotos: response,
@@ -103,8 +123,6 @@ class App extends React.Component {
   }
 
   _handleDayClick(photo) {
-    console.log(`Day click with photo`)
-    console.log(photo)
     this.state.allPhotos.forEach((p, i) => {
       if (p.id === photo.id){
         this.setState(
@@ -119,13 +137,29 @@ class App extends React.Component {
     }, this);
   }
 
+  handleDeleteComment(comment) {
+    $.ajax({
+      type: 'DELETE',
+      url: `api/v1/photos/${this.state.photo.id}/comments/${comment.id}`
+    })
+    .done(() => this.getComments(this.state.photo));
+  }
+
+  handleEditComment(comment) {
+    $.ajax({
+      type: 'PATCH',
+      url: `api/v1/photos/${this.state.photo.id}/comments/${comment.id}`,
+      data: { comment: { body: comment.body }  },
+    })
+    .done(() => this.getComments(this.state.photo));
+  }
+
   render () {
-    console.log("App.render() has just been invoked!")
     if (this.state.componentName === "PhotoList") {
       return (
         <div>
           <NavigationHeader user={ this.props.user }
-                            handleBrowse={ this.handleBrowse.bind(this) } />
+                            handleBrowse={ this.handleBrowse } />
           <PhotoList photos={ this.state.filteredPhotos }
                      config={ this.state.photoListConfiguration } />
         </div>
@@ -135,12 +169,19 @@ class App extends React.Component {
       return (
         <div>
           <NavigationHeader user={ this.props.user }
-                            handleBrowse={ this.handleBrowse.bind(this) } />
-          <PhotoShow  photos={ this.state.allPhotos }
-                      photoIndex={ this.state.photoIndex }
-                      currentPhoto={ this.state.photo }
-                      forward={ this.decrementPhotoIndex.bind(this) }
-                      back={ this.incrementPhotoIndex.bind(this) } />
+                            handleBrowse={ this.handleBrowse } />
+          <PhotoShow
+            photos={ this.state.allPhotos }
+            photoIndex={ this.state.photoIndex }
+            currentPhoto={ this.state.photo }
+            forward={ this.decrementPhotoIndex }
+            back={ this.incrementPhotoIndex }
+            user={ this.props.user }
+            handleNewComment={ this.handleNewComment }
+            comments={ this.state.comments }
+            handleDeleteComment={ this.handleDeleteComment }
+            handleEditComment={ this.handleEditComment }
+          />
         </div>
       )
     }

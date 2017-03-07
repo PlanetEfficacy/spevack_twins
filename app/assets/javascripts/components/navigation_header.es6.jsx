@@ -1,6 +1,5 @@
 class NavigationHeader extends React.Component {
   signOut() {
-    console.log("Sign Out")
     $.ajax({
         url: "/sign_out",
         type: 'DELETE',

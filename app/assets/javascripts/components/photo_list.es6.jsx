@@ -1,6 +1,5 @@
 class PhotoList extends React.Component {
   componentDidMount() {
-    console.log(`PhotoList has mounted ${this.props.photos.length} photos!`)
   }
 
   getPhotosForMonth(date) {
@@ -47,22 +46,18 @@ class PhotoList extends React.Component {
   clickHandler(photo) {
     switch (this.props.config.smallPhotoType) {
       case 'year':
-        console.log('assigning year click handler')
         this.props.config.handleClick(this.photoYear(photo))
         break;
       case 'month':
-        console.log('assigning month click handler')
         this.props.config.handleClick(this.photoYear(photo), this.photoMonth(photo))
         break;
       case 'day':
-        console.log('assigning day click handler')
         this.props.config.handleClick(photo)
         break;
     }
   }
 
   render () {
-    console.log("PhotoList.render() has just been invoked!")
     return (
       <div className="container">
         <h4 className="center-align">{ this.props.config.listHeader }</h4>

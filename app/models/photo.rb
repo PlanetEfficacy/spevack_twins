@@ -5,6 +5,8 @@ class Photo < ApplicationRecord
   validates_presence_of :caption
   validates_presence_of :date
 
+  has_many :comments, as: :commentable, dependent: :destroy
+
   default_scope { order(date: :desc) }
 
   BDAY = Date.new(2015,12,29)

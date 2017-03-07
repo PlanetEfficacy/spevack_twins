@@ -27,3 +27,45 @@ a#sign-out {
 .small-photo-date {
   margin-left: 10px;
 }
+
+img.account-img.z-depth-1 {
+  margin-top: 20px;
+}
+
+/*
+When creating your CSS selector,
+change "brown" to something of your choosing
+*/
+.waves-effect.waves-yellow-accent-4  .waves-ripple {
+ /* The alpha value allows the text and background color
+ of the button to still show through. */
+  background-color: #ffd600;
+}
+
+.bottom-margin-25 {
+  margin-bottom: 25px;
+}
+
+.comment-row {
+  padding-bottom: 1px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.more-comment {
+  width: 4rem;
+  position: absolute;
+  display: block;
+  line-height: 2em;
+}
+
+.more-comment a {
+  padding-left: 10px;
+  color: black;
+}
+
+.hovered {
+  background-color: #F3F3F3;
+}
