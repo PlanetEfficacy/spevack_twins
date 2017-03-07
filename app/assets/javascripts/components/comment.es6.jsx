@@ -41,7 +41,7 @@ class Comment extends React.Component {
     return comments.map((comment) => {
       return (
         <Comment
-          comment={ commnet }
+          comment={ comment }
           key={ comment.id }
           user={ this.props.user }
         />
