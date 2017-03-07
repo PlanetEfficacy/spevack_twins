@@ -1,4 +1,8 @@
 class CommentList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleNewComment = this.handleNewComment.bind(this)
+  }
 
   handleNewComment (comment) {
     this.props.handleNewComment(comment)
@@ -19,17 +23,30 @@ class CommentList extends React.Component {
     })
   }
 
+  renderNewCommentBox () {
+    if(!this.props.subCommentList){
+      return (
+        <NewCommentBox
+          handleNewComment={ this.handleNewComment }
+          photo={this.props.photo }
+          user={this.props.user}
+        />
+      )
+    }
+  }
+
   render () {
+
+    const listClassName = !this.props.subCommentList ? "col s12 m6 offset-m3"
+                            : "col s11 offset-s1";
+
+    const cardClassName = !this.props.subCommentList && "card";
 
     return (
       <div className="main-photo row">
-        <div className="col s12 m6 offset-m3">
-          <div className="card">
-            <NewCommentBox
-              handleNewComment={ this.handleNewComment.bind(this) }
-              photo={this.props.photo }
-              user={this.props.user}
-            />
+        <div className={ listClassName }>
+          <div className={ cardClassName }>
+            { this.renderNewCommentBox() }
             { this.renderComments() }
           </div>
         </div>

@@ -38,15 +38,16 @@ class Comment extends React.Component {
 
   replyComments() {
     const comments = this.props.comment.comments
-    return comments.map((comment) => {
-      return (
-        <Comment
-          comment={ commnet }
-          key={ comment.id }
-          user={ this.props.user }
-        />
-      )
-    })
+    return (
+      <CommentList
+        comments={ comments }
+        user={ this.props.user }
+        handleNewComment={ console.log("handleNewComment") }
+        handleDeleteComment={ console.log("handleDeleteComment") }
+        handleEditComment={ console.log("handleEditComment") }
+        subCommentList={ true }
+      />
+    )
   }
 
   render () {
