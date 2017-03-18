@@ -15,11 +15,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       concern :commentable do 
-       resources :comments
+       resources :comments, except: [:new, :edit]
       end
 
       resources :photos, concerns: :commentable, shallow: true, only: [:index] 
-      resources :comments, concerns: :commentable, shallow: true
+      resources :comments, concerns: :commentable, shallow: true, except: [:new, :edit]
 
       namespace :photos do
         get 'one-per-year',     to: 'one_per_year#index'
