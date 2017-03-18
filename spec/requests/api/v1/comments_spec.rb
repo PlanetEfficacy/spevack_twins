@@ -59,7 +59,7 @@ describe "GET api/v1/comments/:id/comments", type: :request do
   let(:comment) { double }
   let(:comment_list) { double }
 
-  it "returns all comments for a given photo" do
+  it "returns all comments for a given comment" do
     allow(Comment).to receive(:find).with('1').and_return(comment)
     expect(comment).to receive(:comments).and_return(comment_list)
     sign_in user
@@ -113,7 +113,7 @@ describe "PATCH api/v1/comments/:id", type: :request do
   let(:user) { create :user }
   let(:comment) { double }
 
-  it "returns the newly updated comment for a given commentable" do
+  it "returns the newly updated comment" do
     allow(Comment).to receive(:find).with('1').and_return(comment)
     expect(comment).to receive(:update).with(body: 'pants').and_return(comment)
     expect(comment).to receive(:save).and_return(true)
