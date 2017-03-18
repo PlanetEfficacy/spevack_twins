@@ -18,6 +18,7 @@ class CommentList extends React.Component {
           user={ this.props.user }
           handleDeleteComment={ this.props.handleDeleteComment }
           handleEditComment={ this.props.handleEditComment }
+          handleNewComment={ this.handleNewComment }
         />
       );
     })
@@ -36,7 +37,6 @@ class CommentList extends React.Component {
   }
 
   render () {
-
     const listClassName = !this.props.subCommentList ? "col s12 m6 offset-m3"
                             : "col s11 offset-s1";
 

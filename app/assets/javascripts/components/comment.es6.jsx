@@ -42,7 +42,7 @@ class Comment extends React.Component {
       <CommentList
         comments={ comments }
         user={ this.props.user }
-        handleNewComment={ console.log("handleNewComment") }
+        handleNewComment={ this.props.handleNewComment }
         handleDeleteComment={ console.log("handleDeleteComment") }
         handleEditComment={ console.log("handleEditComment") }
         subCommentList={ true }

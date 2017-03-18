@@ -14,9 +14,12 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :photos, only: [:index] do
-        resources :comments, only: [:index, :create, :update, :destroy]
+      concern :commentable do 
+       resources :comments
       end
+
+      resources :photos, concerns: :commentable, shallow: true, only: [:index] 
+      resources :comments, concerns: :commentable, shallow: true
 
       namespace :photos do
         get 'one-per-year',     to: 'one_per_year#index'
