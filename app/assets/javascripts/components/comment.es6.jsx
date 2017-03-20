@@ -5,11 +5,15 @@ class Comment extends React.Component {
       newCommentActive: false,
       activeEdit: false
     }
+    
     this.activateReplyComment = this.activateReplyComment.bind(this);
     this.deactivateReplyComment = this.deactivateReplyComment.bind(this);
     this.handleActivateEditComment = this.handleActivateEditComment.bind(this);
     this.handleDeactiveateEditComment = this.handleDeactiveateEditComment.bind(this);
+    this.handleNewComment = this.handleNewComment.bind(this);
     this.handleUpdateComment = this.handleUpdateComment.bind(this);
+    this.newComment = this.newComment.bind(this);
+    this.showComment = this.showComment.bind(this);
   }
 
   activateReplyComment(e) {
@@ -36,18 +40,63 @@ class Comment extends React.Component {
     this.setState({ activeEdit: false })
   }
 
+  handleNewComment(comment) {
+    this.props.handleNewComment(comment);
+    this.setState({ newCommentActive: false })
+  }
+
   replyComments() {
-    const comments = this.props.comment.comments
     return (
       <CommentList
-        comments={ comments }
-        user={ this.props.user }
+        commentable={ this.props.comment }
+        comments={ this.props.comment.comments }
+        handleDeleteComment={ this.props.handleDeleteComment }
+        handleEditComment={ this.props.handleEditComment }
         handleNewComment={ this.props.handleNewComment }
-        handleDeleteComment={ console.log("handleDeleteComment") }
-        handleEditComment={ console.log("handleEditComment") }
         subCommentList={ true }
+        currentUser={ this.props.currentUser }
       />
     )
+  }
+ 
+  newComment() {
+    if (this.state.newCommentActive) {
+      return (
+        <div className="row">
+          <div className="col s11 offset-s1">
+            <NewCommentBox
+              commentable={ this.props.comment }
+              currentUser={ this.props.currentUser }
+              handleDeactivateComment={ this.deactivateReplyComment }
+              handleNewComment={ this.handleNewComment }
+              path={ 'comments' }
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
+  showComment() {
+    if(this.state.activeEdit){
+      return (
+        <EditComment
+          comment={ this.props.comment }
+          handleDeactivateEdit={ this.handleDeactivateEdit }
+          handleUpdateComment={ this.handleUpdateComment }
+        />
+      )
+    } else {
+      return (
+        <ShowComment
+          activateReplyComment={ this.activateReplyComment }
+          currentUser={ this.props.currentUser }
+          comment={ this.props.comment }
+          handleDeleteComment={ this.props.handleDeleteComment }
+          handleActivateEditComment={ this.handleActivateEditComment }
+        />
+      )
+    }
   }
 
   render () {
@@ -63,36 +112,9 @@ class Comment extends React.Component {
               src={ userImage }
               className="account-img" />
           </div>
-          {
-            this.state.activeEdit
-            ?
-            <EditComment
-              comment={ comment }
-              handleDeactivateEdit={ this.handleDeactivateEdit }
-              handleUpdateComment={ this.handleUpdateComment }
-            />
-            :
-            <ShowComment
-              activateReplyComment={ this.activateReplyComment }
-              comment={ comment }
-              handleDeleteComment={ this.props.handleDeleteComment }
-              handleActivateEditComment={ this.handleActivateEditComment }
-            />
-          }
+          { this.showComment() }
         </div>
-        {
-          this.state.newCommentActive
-          &&
-          <div className="row">
-            <div className="col s11 offset-s1">
-              <NewCommentBox
-                comment={ comment }
-                handleDeactivateComment={ this.deactivateReplyComment }
-                replyComment={ true }
-                user={ this.props.comment.user } />
-            </div>
-          </div>
-        }
+        { this.newComment() }
         { this.replyComments() }
       </div>
     );

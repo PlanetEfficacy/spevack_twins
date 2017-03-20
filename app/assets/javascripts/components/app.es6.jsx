@@ -30,6 +30,7 @@ class App extends React.Component {
     this.getPhotos(firstPhoto)
   }
 
+  // Comments
   getComments(photo) {
     $.getJSON(`/api/v1/photos/${photo.id}/comments`, (response) => {
       this.setState({ comments: response })
@@ -37,10 +38,27 @@ class App extends React.Component {
   }
 
   handleNewComment(comment) {
-    const comments = this.state.comments.push(comment)
-    this.setState({ comments: comments })
+    this.getComments(this.state.photo)
   }
 
+  handleDeleteComment(comment) {
+    $.ajax({
+      type: 'DELETE',
+      url: `api/v1/comments/${comment.id}`
+    })
+    .done(() => this.getComments(this.state.photo));
+  }
+
+  handleEditComment(comment) {
+    $.ajax({
+      type: 'PATCH',
+      url: `api/v1/comments/${comment.id}`,
+      data: { comment: { body: comment.body }  },
+    })
+    .done(() => this.getComments(this.state.photo));
+  }
+
+  // Photos
   getPhotos(index) {
     $.getJSON('/api/v1/photos.json', (response) => {
       this.setState({ allPhotos:  response,
@@ -92,8 +110,9 @@ class App extends React.Component {
     $.getJSON(`/api/v1/photos/one-per-month?year=${year}`, (response) => {
       this.setState(
         {
-          filteredPhotos: response,
           componentName:  'PhotoList',
+          comments: [],
+          filteredPhotos: response,
           photoListConfiguration: {
             handleClick: this.handleMonthClick.bind(this),
             smallPhotoType: 'month',
@@ -137,50 +156,39 @@ class App extends React.Component {
     }, this);
   }
 
-  handleDeleteComment(comment) {
-    $.ajax({
-      type: 'DELETE',
-      url: `api/v1/photos/${this.state.photo.id}/comments/${comment.id}`
-    })
-    .done(() => this.getComments(this.state.photo));
-  }
-
-  handleEditComment(comment) {
-    $.ajax({
-      type: 'PATCH',
-      url: `api/v1/photos/${this.state.photo.id}/comments/${comment.id}`,
-      data: { comment: { body: comment.body }  },
-    })
-    .done(() => this.getComments(this.state.photo));
-  }
-
   render () {
     if (this.state.componentName === "PhotoList") {
       return (
         <div>
-          <NavigationHeader user={ this.props.user }
-                            handleBrowse={ this.handleBrowse } />
-          <PhotoList photos={ this.state.filteredPhotos }
-                     config={ this.state.photoListConfiguration } />
+          <NavigationHeader
+            handleBrowse={ this.handleBrowse }
+            user={ this.props.user }
+          />
+          <PhotoList
+            config={ this.state.photoListConfiguration }
+            photos={ this.state.filteredPhotos } 
+          />
         </div>
       )
     }
     else if (this.state.componentName === "PhotoShow") {
       return (
         <div>
-          <NavigationHeader user={ this.props.user }
-                            handleBrowse={ this.handleBrowse } />
-          <PhotoShow
-            photos={ this.state.allPhotos }
-            photoIndex={ this.state.photoIndex }
-            currentPhoto={ this.state.photo }
-            forward={ this.decrementPhotoIndex }
-            back={ this.incrementPhotoIndex }
+          <NavigationHeader
+            handleBrowse={ this.handleBrowse } 
             user={ this.props.user }
-            handleNewComment={ this.handleNewComment }
+          />
+          <PhotoShow
+            back={ this.incrementPhotoIndex }
             comments={ this.state.comments }
+            currentPhoto={ this.state.photo }
+            currentUser={ this.props.user }
+            forward={ this.decrementPhotoIndex }
             handleDeleteComment={ this.handleDeleteComment }
             handleEditComment={ this.handleEditComment }
+            handleNewComment={ this.handleNewComment }
+            photos={ this.state.allPhotos }
+            photoIndex={ this.state.photoIndex }
           />
         </div>
       )

@@ -1,24 +1,26 @@
 class PhotoShow extends React.Component {
-  handleNewComment (comment) {
-    this.props.handleNewComment(comment)
-  }
-
   render () {
-    let photo = this.props.currentPhoto;
-
+    const photo = this.props.currentPhoto;
     return (
       <div>
-        <MainPhoto  photo={ photo } />
-        <NavigationButtons forward={ this.props.forward } back={ this.props.back } />
+        <MainPhoto 
+          photo={ photo } 
+        />
+        <NavigationButtons 
+          back={ this.props.back } 
+          forward={ this.props.forward } 
+        />
         <CommentList
+          commentable={ photo }
           comments={ this.props.comments }
-          user={ this.props.user }
-          photo={ photo }
-          handleNewComment={ this.handleNewComment.bind(this) }
+          currentUser={ this.props.currentUser }
           handleDeleteComment={ this.props.handleDeleteComment }
           handleEditComment={ this.props.handleEditComment }
+          handleNewComment={ this.props.handleNewComment }
         />
-        <BigButton  icon="favorite"/>
+        <BigButton 
+          icon="favorite"
+        />
       </div>
     )
   }
