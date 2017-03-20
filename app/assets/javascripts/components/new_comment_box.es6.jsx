@@ -6,16 +6,22 @@ class NewCommentBox extends React.Component {
       comment: ''
     }
 
-    this.updateCommentValue = this.updateCommentValue.bind(this)
+    this.handleNewComment = this.handleNewComment.bind(this);
+    this.postComment = this.postComment.bind(this);
+    this.updateCommentValue = this.updateCommentValue.bind(this);
+  }
+
+  getPostPath () {
+    return `api/v1/${this.props.path}/${this.props.commentable.id}/comments`;
   }
 
   postComment (e) {
     e.preventDefault();
     $.ajax({
       type: 'POST',
-      url: `api/v1/photos/${this.props.photo.id}/comments`,
+      url: this.getPostPath(), 
       data: { comment: { body: this.state.comment }  },
-      success: this.handleNewComment.bind(this),
+      success: this.handleNewComment
     });
   }
 
@@ -50,7 +56,7 @@ class NewCommentBox extends React.Component {
           <button
             className={`${buttonClass} ${ this.state.comment === '' && 'disabled' }`}
             disabled={ this.state.comment === '' }
-            onClick={ this.postComment.bind(this) }
+            onClick={ this.postComment }
           >
             Comment
           </button>
@@ -68,13 +74,15 @@ class NewCommentBox extends React.Component {
       <div className='hoverable'>
         <div className='row'>
           <div className='col m2'>
-            <img src={this.props.user.image} className='account-img'/>
+            <img src={ this.props.currentUser.image } className='account-img'/>
           </div>
           <div className='col m10'>
-            <textarea className='materialize-textarea'
-                      value={ this.state.comment }
-                      onFocus={ this.showButtons.bind(this) }
-                      onChange={ this.updateCommentValue } />
+            <textarea
+              className='materialize-textarea'
+              onChange={ this.updateCommentValue }
+              onFocus={ this.showButtons.bind(this) }
+              value={ this.state.comment }
+            />
           </div>
         </div>
         <div className='row'>

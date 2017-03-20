@@ -3,13 +3,14 @@ class ShowComment extends React.Component {
     super(props)
     this.state = {
       newCommentActive: false,
-      showMoreMenue: false,
+      showMoreMenu: false,
       hoverEdit: false,
       hoverDelete: false,
     }
 
-    this.toggleMoreComment = this.toggleMoreComment.bind(this);
     this.handleDeleteComment = this.handleDeleteComment.bind(this);
+    this.showMoreMenu = this.showMoreMenu.bind(this);
+    this.toggleMoreComment = this.toggleMoreComment.bind(this);
   }
 
   handleDeleteComment() {
@@ -21,17 +22,9 @@ class ShowComment extends React.Component {
     this.setState({ showMoreMenu: !this.state.showMoreMenu })
   }
 
-  render () {
-    const comment = this.props.comment;
-    const username = comment.user.name;
-
-    return (
-      <div>
-        <div className="col s9">
-          <p className="username">{ username }</p>
-          <p>{ comment.body }</p>
-          <a href="#" onClick={ this.props.activateReplyComment }>Reply</a>
-        </div>
+  showMoreMenu() {
+    if (this.props.currentUser.id === this.props.comment.user.id) {
+      return (
         <div className="col s1">
           <a href="#!" onClick={ this.toggleMoreComment }>
             <i className="material-icons black-text">more_vert</i>
@@ -53,6 +46,23 @@ class ShowComment extends React.Component {
             </div>
           }
         </div>
+      )
+    }
+  }
+
+  render () {
+    const comment = this.props.comment;
+    const username = comment.user.name;
+    return (
+      <div>
+        <div className="col s9">
+          <p className="username">{ username }
+            <small className="grey-text">{ comment.created_at } ago</small>
+          </p>
+          <p>{ comment.body }</p>
+          <a href="#" onClick={ this.props.activateReplyComment }>Reply</a>
+        </div>
+        { this.showMoreMenu() }
       </div>
     )
   }
