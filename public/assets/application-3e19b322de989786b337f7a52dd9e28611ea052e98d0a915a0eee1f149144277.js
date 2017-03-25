@@ -40778,6 +40778,8 @@ var App = (function (_React$Component) {
       var firstPhoto = 0;
       this.getPhotos(firstPhoto);
     }
+
+    // Comments
   }, {
     key: 'getComments',
     value: function getComments(photo) {
@@ -40790,20 +40792,46 @@ var App = (function (_React$Component) {
   }, {
     key: 'handleNewComment',
     value: function handleNewComment(comment) {
-      var comments = this.state.comments.push(comment);
-      this.setState({ comments: comments });
+      this.getComments(this.state.photo);
     }
+  }, {
+    key: 'handleDeleteComment',
+    value: function handleDeleteComment(comment) {
+      var _this2 = this;
+
+      $.ajax({
+        type: 'DELETE',
+        url: 'api/v1/comments/' + comment.id
+      }).done(function () {
+        return _this2.getComments(_this2.state.photo);
+      });
+    }
+  }, {
+    key: 'handleEditComment',
+    value: function handleEditComment(comment) {
+      var _this3 = this;
+
+      $.ajax({
+        type: 'PATCH',
+        url: 'api/v1/comments/' + comment.id,
+        data: { comment: { body: comment.body } }
+      }).done(function () {
+        return _this3.getComments(_this3.state.photo);
+      });
+    }
+
+    // Photos
   }, {
     key: 'getPhotos',
     value: function getPhotos(index) {
-      var _this2 = this;
+      var _this4 = this;
 
       $.getJSON('/api/v1/photos.json', function (response) {
-        _this2.setState({ allPhotos: response,
+        _this4.setState({ allPhotos: response,
           photo: response[index],
           photoIndex: index });
       }).done(function () {
-        _this2.getComments(_this2.state.photo);
+        _this4.getComments(_this4.state.photo);
       });
     }
   }, {
@@ -40831,14 +40859,14 @@ var App = (function (_React$Component) {
   }, {
     key: 'handleBrowse',
     value: function handleBrowse() {
-      var _this3 = this;
+      var _this5 = this;
 
       $.getJSON('/api/v1/photos/one-per-year', function (response) {
-        _this3.setState({
+        _this5.setState({
           filteredPhotos: response,
           componentName: 'PhotoList',
           photoListConfiguration: {
-            handleClick: _this3.handleYearClick.bind(_this3),
+            handleClick: _this5.handleYearClick.bind(_this5),
             smallPhotoType: 'year',
             listHeader: 'Browse by Year'
           }
@@ -40848,14 +40876,15 @@ var App = (function (_React$Component) {
   }, {
     key: 'handleYearClick',
     value: function handleYearClick(year) {
-      var _this4 = this;
+      var _this6 = this;
 
       $.getJSON('/api/v1/photos/one-per-month?year=' + year, function (response) {
-        _this4.setState({
-          filteredPhotos: response,
+        _this6.setState({
           componentName: 'PhotoList',
+          comments: [],
+          filteredPhotos: response,
           photoListConfiguration: {
-            handleClick: _this4.handleMonthClick.bind(_this4),
+            handleClick: _this6.handleMonthClick.bind(_this6),
             smallPhotoType: 'month',
             listHeader: 'Browse ' + year
           }
@@ -40865,16 +40894,16 @@ var App = (function (_React$Component) {
   }, {
     key: 'handleMonthClick',
     value: function handleMonthClick(year, month) {
-      var _this5 = this;
+      var _this7 = this;
 
       var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       var properMonth = months[parseInt(month) - 1];
       $.getJSON(this.state.root + '/all-month-year?year=' + year + '&month=' + month, function (response) {
-        _this5.setState({
+        _this7.setState({
           filteredPhotos: response,
           componenName: 'PhotoList',
           photoListConfiguration: {
-            handleClick: _this5._handleDayClick.bind(_this5),
+            handleClick: _this7._handleDayClick.bind(_this7),
             smallPhotoType: 'day',
             listHeader: 'Browse ' + properMonth + ' ' + year
           }
@@ -40884,11 +40913,11 @@ var App = (function (_React$Component) {
   }, {
     key: '_handleDayClick',
     value: function _handleDayClick(photo) {
-      var _this6 = this;
+      var _this8 = this;
 
       this.state.allPhotos.forEach(function (p, i) {
         if (p.id === photo.id) {
-          _this6.setState({
+          _this8.setState({
             componentName: 'PhotoShow',
             photo: photo,
             photoIndex: i
@@ -40898,59 +40927,40 @@ var App = (function (_React$Component) {
       }, this);
     }
   }, {
-    key: 'handleDeleteComment',
-    value: function handleDeleteComment(comment) {
-      var _this7 = this;
-
-      $.ajax({
-        type: 'DELETE',
-        url: 'api/v1/photos/' + this.state.photo.id + '/comments/' + comment.id
-      }).done(function () {
-        return _this7.getComments(_this7.state.photo);
-      });
-    }
-  }, {
-    key: 'handleEditComment',
-    value: function handleEditComment(comment) {
-      var _this8 = this;
-
-      $.ajax({
-        type: 'PATCH',
-        url: 'api/v1/photos/' + this.state.photo.id + '/comments/' + comment.id,
-        data: { comment: { body: comment.body } }
-      }).done(function () {
-        return _this8.getComments(_this8.state.photo);
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
       if (this.state.componentName === "PhotoList") {
         return React.createElement(
           'div',
           null,
-          React.createElement(NavigationHeader, { user: this.props.user,
-            handleBrowse: this.handleBrowse }),
-          React.createElement(PhotoList, { photos: this.state.filteredPhotos,
-            config: this.state.photoListConfiguration })
+          React.createElement(NavigationHeader, {
+            handleBrowse: this.handleBrowse,
+            user: this.props.user
+          }),
+          React.createElement(PhotoList, {
+            config: this.state.photoListConfiguration,
+            photos: this.state.filteredPhotos
+          })
         );
       } else if (this.state.componentName === "PhotoShow") {
         return React.createElement(
           'div',
           null,
-          React.createElement(NavigationHeader, { user: this.props.user,
-            handleBrowse: this.handleBrowse }),
+          React.createElement(NavigationHeader, {
+            handleBrowse: this.handleBrowse,
+            user: this.props.user
+          }),
           React.createElement(PhotoShow, {
-            photos: this.state.allPhotos,
-            photoIndex: this.state.photoIndex,
-            currentPhoto: this.state.photo,
-            forward: this.decrementPhotoIndex,
             back: this.incrementPhotoIndex,
-            user: this.props.user,
-            handleNewComment: this.handleNewComment,
             comments: this.state.comments,
+            currentPhoto: this.state.photo,
+            currentUser: this.props.user,
+            forward: this.decrementPhotoIndex,
             handleDeleteComment: this.handleDeleteComment,
-            handleEditComment: this.handleEditComment
+            handleEditComment: this.handleEditComment,
+            handleNewComment: this.handleNewComment,
+            photos: this.state.allPhotos,
+            photoIndex: this.state.photoIndex
           })
         );
       }
@@ -41016,11 +41026,15 @@ var Comment = (function (_React$Component) {
       newCommentActive: false,
       activeEdit: false
     };
+
     this.activateReplyComment = this.activateReplyComment.bind(this);
     this.deactivateReplyComment = this.deactivateReplyComment.bind(this);
     this.handleActivateEditComment = this.handleActivateEditComment.bind(this);
     this.handleDeactiveateEditComment = this.handleDeactiveateEditComment.bind(this);
+    this.handleNewComment = this.handleNewComment.bind(this);
     this.handleUpdateComment = this.handleUpdateComment.bind(this);
+    this.newComment = this.newComment.bind(this);
+    this.showComment = this.showComment.bind(this);
   }
 
   _createClass(Comment, [{
@@ -41053,18 +41067,63 @@ var Comment = (function (_React$Component) {
       this.setState({ activeEdit: false });
     }
   }, {
+    key: "handleNewComment",
+    value: function handleNewComment(comment) {
+      this.props.handleNewComment(comment);
+      this.setState({ newCommentActive: false });
+    }
+  }, {
     key: "replyComments",
     value: function replyComments() {
-      var _this = this;
-
-      var comments = this.props.comment.comments;
-      return comments.map(function (comment) {
-        return React.createElement(Comment, {
-          comment: commnet,
-          key: comment.id,
-          user: _this.props.user
-        });
+      return React.createElement(CommentList, {
+        commentable: this.props.comment,
+        comments: this.props.comment.comments,
+        handleDeleteComment: this.props.handleDeleteComment,
+        handleEditComment: this.props.handleEditComment,
+        handleNewComment: this.props.handleNewComment,
+        subCommentList: true,
+        currentUser: this.props.currentUser
       });
+    }
+  }, {
+    key: "newComment",
+    value: function newComment() {
+      if (this.state.newCommentActive) {
+        return React.createElement(
+          "div",
+          { className: "row" },
+          React.createElement(
+            "div",
+            { className: "col s11 offset-s1" },
+            React.createElement(NewCommentBox, {
+              commentable: this.props.comment,
+              currentUser: this.props.currentUser,
+              handleDeactivateComment: this.deactivateReplyComment,
+              handleNewComment: this.handleNewComment,
+              path: 'comments'
+            })
+          )
+        );
+      }
+    }
+  }, {
+    key: "showComment",
+    value: function showComment() {
+      if (this.state.activeEdit) {
+        return React.createElement(EditComment, {
+          comment: this.props.comment,
+          handleDeactivateEdit: this.handleDeactivateEdit,
+          handleUpdateComment: this.handleUpdateComment
+        });
+      } else {
+        return React.createElement(ShowComment, {
+          activateReplyComment: this.activateReplyComment,
+          currentUser: this.props.currentUser,
+          comment: this.props.comment,
+          handleDeleteComment: this.props.handleDeleteComment,
+          handleActivateEditComment: this.handleActivateEditComment
+        });
+      }
     }
   }, {
     key: "render",
@@ -41086,30 +41145,9 @@ var Comment = (function (_React$Component) {
               src: userImage,
               className: "account-img" })
           ),
-          this.state.activeEdit ? React.createElement(EditComment, {
-            comment: comment,
-            handleDeactivateEdit: this.handleDeactivateEdit,
-            handleUpdateComment: this.handleUpdateComment
-          }) : React.createElement(ShowComment, {
-            activateReplyComment: this.activateReplyComment,
-            comment: comment,
-            handleDeleteComment: this.props.handleDeleteComment,
-            handleActivateEditComment: this.handleActivateEditComment
-          })
+          this.showComment()
         ),
-        this.state.newCommentActive && React.createElement(
-          "div",
-          { className: "row" },
-          React.createElement(
-            "div",
-            { className: "col s11 offset-s1" },
-            React.createElement(NewCommentBox, {
-              comment: comment,
-              handleDeactivateComment: this.deactivateReplyComment,
-              replyComment: true,
-              user: this.props.comment.user })
-          )
-        ),
+        this.newComment(),
         this.replyComments()
       );
     }
@@ -41128,10 +41166,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var CommentList = (function (_React$Component) {
   _inherits(CommentList, _React$Component);
 
-  function CommentList() {
+  function CommentList(props) {
     _classCallCheck(this, CommentList);
 
-    _get(Object.getPrototypeOf(CommentList.prototype), "constructor", this).apply(this, arguments);
+    _get(Object.getPrototypeOf(CommentList.prototype), "constructor", this).call(this, props);
+    this.handleNewComment = this.handleNewComment.bind(this);
   }
 
   _createClass(CommentList, [{
@@ -41148,31 +41187,41 @@ var CommentList = (function (_React$Component) {
       return comments.map(function (comment) {
         return React.createElement(Comment, {
           comment: comment,
-          key: comment.id,
-          user: _this.props.user,
+          currentUser: _this.props.currentUser,
           handleDeleteComment: _this.props.handleDeleteComment,
-          handleEditComment: _this.props.handleEditComment
+          handleEditComment: _this.props.handleEditComment,
+          handleNewComment: _this.handleNewComment,
+          key: comment.id
         });
       });
     }
   }, {
+    key: "renderNewCommentBox",
+    value: function renderNewCommentBox() {
+      if (!this.props.subCommentList) {
+        return React.createElement(NewCommentBox, {
+          commentable: this.props.commentable,
+          currentUser: this.props.currentUser,
+          handleNewComment: this.handleNewComment,
+          path: 'photos'
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-
+      var listClassName = !this.props.subCommentList ? "col s12 m6 offset-m3" : "col s11 offset-s1";
+      var cardClassName = !this.props.subCommentList && "card";
       return React.createElement(
         "div",
         { className: "main-photo row" },
         React.createElement(
           "div",
-          { className: "col s12 m6 offset-m3" },
+          { className: listClassName },
           React.createElement(
             "div",
-            { className: "card" },
-            React.createElement(NewCommentBox, {
-              handleNewComment: this.handleNewComment.bind(this),
-              photo: this.props.photo,
-              user: this.props.user
-            }),
+            { className: cardClassName },
+            this.renderNewCommentBox(),
             this.renderComments()
           )
         )
@@ -41490,10 +41539,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var NavigationHeader = (function (_React$Component) {
   _inherits(NavigationHeader, _React$Component);
 
-  function NavigationHeader() {
+  function NavigationHeader(props) {
     _classCallCheck(this, NavigationHeader);
 
-    _get(Object.getPrototypeOf(NavigationHeader.prototype), "constructor", this).apply(this, arguments);
+    _get(Object.getPrototypeOf(NavigationHeader.prototype), "constructor", this).call(this, props);
+    this.redirectToPhotos = this.redirectToPhotos.bind(this);
+    this.showNewPhoto = this.showNewPhoto.bind(this);
   }
 
   _createClass(NavigationHeader, [{
@@ -41506,8 +41557,35 @@ var NavigationHeader = (function (_React$Component) {
     }
   }, {
     key: "redirectToLogin",
-    value: function redirectToLogin() {
+    value: function redirectToLogin(e) {
+      e.preventDefault();
       location.href = "/sign_in";
+    }
+  }, {
+    key: "redirectToPhotos",
+    value: function redirectToPhotos(e) {
+      e.preventDefault();
+      location.href = "/photos";
+    }
+  }, {
+    key: "showNewPhoto",
+    value: function showNewPhoto() {
+      if (this.props.user.email === "jspevack@gmail.com") {
+        console.log('Current user: ', this.props.user.email);
+        return React.createElement(
+          "li",
+          null,
+          React.createElement(
+            "a",
+            { href: "/photos/new" },
+            React.createElement(
+              "i",
+              { className: "material-icons" },
+              "create"
+            )
+          )
+        );
+      }
     }
   }, {
     key: "render",
@@ -41526,12 +41604,17 @@ var NavigationHeader = (function (_React$Component) {
               { className: "nav-wrapper" },
               React.createElement(
                 "a",
-                { href: "#", className: "brand-logo" },
+                {
+                  className: "brand-logo",
+                  href: "#",
+                  onClick: this.redirectToPhotos
+                },
                 "Spevack Twins"
               ),
               React.createElement(
                 "ul",
                 { id: "nav-mobile", className: "right hide-on-med-and-down" },
+                this.showNewPhoto(),
                 React.createElement(
                   "li",
                   null,
@@ -41611,18 +41694,25 @@ var NewCommentBox = (function (_React$Component) {
       comment: ''
     };
 
+    this.handleNewComment = this.handleNewComment.bind(this);
+    this.postComment = this.postComment.bind(this);
     this.updateCommentValue = this.updateCommentValue.bind(this);
   }
 
   _createClass(NewCommentBox, [{
+    key: 'getPostPath',
+    value: function getPostPath() {
+      return 'api/v1/' + this.props.path + '/' + this.props.commentable.id + '/comments';
+    }
+  }, {
     key: 'postComment',
     value: function postComment(e) {
       e.preventDefault();
       $.ajax({
         type: 'POST',
-        url: 'api/v1/photos/' + this.props.photo.id + '/comments',
+        url: this.getPostPath(),
         data: { comment: { body: this.state.comment } },
-        success: this.handleNewComment.bind(this)
+        success: this.handleNewComment
       });
     }
   }, {
@@ -41666,7 +41756,7 @@ var NewCommentBox = (function (_React$Component) {
             {
               className: buttonClass + ' ' + (this.state.comment === '' && 'disabled'),
               disabled: this.state.comment === '',
-              onClick: this.postComment.bind(this)
+              onClick: this.postComment
             },
             'Comment'
           )
@@ -41690,15 +41780,17 @@ var NewCommentBox = (function (_React$Component) {
           React.createElement(
             'div',
             { className: 'col m2' },
-            React.createElement('img', { src: this.props.user.image, className: 'account-img' })
+            React.createElement('img', { src: this.props.currentUser.image, className: 'account-img' })
           ),
           React.createElement(
             'div',
             { className: 'col m10' },
-            React.createElement('textarea', { className: 'materialize-textarea',
-              value: this.state.comment,
+            React.createElement('textarea', {
+              className: 'materialize-textarea',
+              onChange: this.updateCommentValue,
               onFocus: this.showButtons.bind(this),
-              onChange: this.updateCommentValue })
+              value: this.state.comment
+            })
           )
         ),
         React.createElement(
@@ -41730,9 +41822,6 @@ var PhotoList = (function (_React$Component) {
   }
 
   _createClass(PhotoList, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {}
-  }, {
     key: 'getPhotosForMonth',
     value: function getPhotosForMonth(date) {
       var _this = this;
@@ -41810,10 +41899,12 @@ var PhotoList = (function (_React$Component) {
           this.props.config.listHeader
         ),
         this.props.photos.map((function (photo) {
-          return React.createElement(SmallPhoto, { key: photo.id,
-            photo: photo,
+          return React.createElement(SmallPhoto, {
             date: _this2.smallPhotoDate(photo),
-            handleClick: _this2.clickHandler.bind(_this2) });
+            handleClick: _this2.clickHandler.bind(_this2),
+            key: photo.id,
+            photo: photo
+          });
         }).bind(this))
       );
     }
@@ -41839,29 +41930,30 @@ var PhotoShow = (function (_React$Component) {
   }
 
   _createClass(PhotoShow, [{
-    key: "handleNewComment",
-    value: function handleNewComment(comment) {
-      this.props.handleNewComment(comment);
-    }
-  }, {
     key: "render",
     value: function render() {
       var photo = this.props.currentPhoto;
-
       return React.createElement(
         "div",
         null,
-        React.createElement(MainPhoto, { photo: photo }),
-        React.createElement(NavigationButtons, { forward: this.props.forward, back: this.props.back }),
-        React.createElement(CommentList, {
-          comments: this.props.comments,
-          user: this.props.user,
-          photo: photo,
-          handleNewComment: this.handleNewComment.bind(this),
-          handleDeleteComment: this.props.handleDeleteComment,
-          handleEditComment: this.props.handleEditComment
+        React.createElement(MainPhoto, {
+          photo: photo
         }),
-        React.createElement(BigButton, { icon: "favorite" })
+        React.createElement(NavigationButtons, {
+          back: this.props.back,
+          forward: this.props.forward
+        }),
+        React.createElement(CommentList, {
+          commentable: photo,
+          comments: this.props.comments,
+          currentUser: this.props.currentUser,
+          handleDeleteComment: this.props.handleDeleteComment,
+          handleEditComment: this.props.handleEditComment,
+          handleNewComment: this.props.handleNewComment
+        }),
+        React.createElement(BigButton, {
+          icon: "favorite"
+        })
       );
     }
   }]);
@@ -41885,13 +41977,14 @@ var ShowComment = (function (_React$Component) {
     _get(Object.getPrototypeOf(ShowComment.prototype), "constructor", this).call(this, props);
     this.state = {
       newCommentActive: false,
-      showMoreMenue: false,
+      showMoreMenu: false,
       hoverEdit: false,
       hoverDelete: false
     };
 
-    this.toggleMoreComment = this.toggleMoreComment.bind(this);
     this.handleDeleteComment = this.handleDeleteComment.bind(this);
+    this.showMoreMenu = this.showMoreMenu.bind(this);
+    this.toggleMoreComment = this.toggleMoreComment.bind(this);
   }
 
   _createClass(ShowComment, [{
@@ -41906,34 +41999,10 @@ var ShowComment = (function (_React$Component) {
       this.setState({ showMoreMenu: !this.state.showMoreMenu });
     }
   }, {
-    key: "render",
-    value: function render() {
-      var comment = this.props.comment;
-      var username = comment.user.name;
-
-      return React.createElement(
-        "div",
-        null,
-        React.createElement(
-          "div",
-          { className: "col s9" },
-          React.createElement(
-            "p",
-            { className: "username" },
-            username
-          ),
-          React.createElement(
-            "p",
-            null,
-            comment.body
-          ),
-          React.createElement(
-            "a",
-            { href: "#", onClick: this.props.activateReplyComment },
-            "Reply"
-          )
-        ),
-        React.createElement(
+    key: "showMoreMenu",
+    value: function showMoreMenu() {
+      if (this.props.currentUser.id === this.props.comment.user.id) {
+        return React.createElement(
           "div",
           { className: "col s1" },
           React.createElement(
@@ -41961,7 +42030,43 @@ var ShowComment = (function (_React$Component) {
               })
             )
           )
-        )
+        );
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var comment = this.props.comment;
+      var username = comment.user.name;
+      return React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "div",
+          { className: "col s9" },
+          React.createElement(
+            "p",
+            { className: "username" },
+            username,
+            React.createElement(
+              "small",
+              { className: "grey-text" },
+              comment.created_at,
+              " ago"
+            )
+          ),
+          React.createElement(
+            "p",
+            null,
+            comment.body
+          ),
+          React.createElement(
+            "a",
+            { href: "#", onClick: this.props.activateReplyComment },
+            "Reply"
+          )
+        ),
+        this.showMoreMenu()
       );
     }
   }]);
@@ -41983,17 +42088,19 @@ var SmallPhoto = (function (_React$Component) {
     _classCallCheck(this, SmallPhoto);
 
     _get(Object.getPrototypeOf(SmallPhoto.prototype), 'constructor', this).call(this);
-    this._handleClick = this._handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   _createClass(SmallPhoto, [{
-    key: '_handleClick',
-    value: function _handleClick() {
+    key: 'handleClick',
+    value: function handleClick() {
       this.props.handleClick(this.props.photo);
     }
   }, {
     key: 'smallPhotoStyle',
-    value: function smallPhotoStyle(imageUrl) {
+    value: function smallPhotoStyle() {
+      var photo = this.props.photo;
+      var imageUrl = photo.image.thumb ? photo.image.thumb.url : photo.image.url;
       return {
         backgroundImage: 'url(' + imageUrl + ')'
       };
@@ -42006,8 +42113,10 @@ var SmallPhoto = (function (_React$Component) {
         { href: '#', onClick: this._handleClick },
         React.createElement(
           'div',
-          { className: 'small-image-card z-depth-2',
-            style: this.smallPhotoStyle(this.props.photo.image.url) },
+          {
+            className: 'small-image-card z-depth-2',
+            style: this.smallPhotoStyle()
+          },
           React.createElement(
             'span',
             null,

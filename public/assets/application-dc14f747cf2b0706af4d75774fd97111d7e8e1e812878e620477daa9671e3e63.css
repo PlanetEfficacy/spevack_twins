@@ -12069,3 +12069,8 @@ change "brown" to something of your choosing
 .hovered {
   background-color: #F3F3F3;
 }
+
+/* line 73, /Users/JesseSpevack/turing/5module/spevack_twins_rails_react/app/assets/stylesheets/custom.css */
+small.grey-text {
+  margin-left: 5px;
+}
