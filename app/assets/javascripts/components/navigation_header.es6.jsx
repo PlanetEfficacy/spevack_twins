@@ -1,4 +1,10 @@
 class NavigationHeader extends React.Component {
+  constructor(props) {
+    super(props)
+    this.redirectToPhotos = this.redirectToPhotos.bind(this);
+    this.showNewPhoto = this.showNewPhoto.bind(this);
+  }
+
   signOut() {
     $.ajax({
         url: "/sign_out",
@@ -6,8 +12,26 @@ class NavigationHeader extends React.Component {
     }).then(this.redirectToLogin);
   }
 
-  redirectToLogin() {
+  redirectToLogin(e) {
+    e.preventDefault();
     location.href = "/sign_in"
+  }
+
+  redirectToPhotos(e) {
+    e.preventDefault();
+    location.href = "/photos"
+  }
+
+  showNewPhoto() {
+    if (this.props.user.email === "jspevack@gmail.com") {
+      return (
+        <li>
+          <a href="/photos/new">
+            <i className="material-icons">create</i>
+          </a>
+        </li>
+      )
+    }
   }
 
   render () {
@@ -16,8 +40,15 @@ class NavigationHeader extends React.Component {
         <nav>
           <div className="container">
             <div className="nav-wrapper">
-              <a href="#" className="brand-logo">Spevack Twins</a>
+              <a
+                className="brand-logo"
+                href="#" 
+                onClick={ this.redirectToPhotos }
+              >
+                Spevack Twins
+              </a>
               <ul id="nav-mobile" className="right hide-on-med-and-down">
+                { this.showNewPhoto() }
                 <li><a href="#"><i className="material-icons">favorite</i></a></li>
                 <li><a href="#"><i className="material-icons">search</i></a></li>
                 <li><a href="#" onClick={this.props.handleBrowse}><i className="material-icons">collections</i></a></li>
