@@ -24,6 +24,7 @@ class NavigationHeader extends React.Component {
 
   showNewPhoto() {
     if (this.props.user.email === "jspevack@gmail.com") {
+      console.log('Current user: ', this.props.user.email)
       return (
         <li>
           <a href="/photos/new">
