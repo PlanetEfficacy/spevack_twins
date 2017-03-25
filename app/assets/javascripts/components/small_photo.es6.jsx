@@ -1,14 +1,16 @@
 class SmallPhoto extends React.Component {
   constructor() {
     super();
-    this. _handleClick = this. _handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  _handleClick() {
+  handleClick() {
     this.props.handleClick(this.props.photo)
   }
 
-  smallPhotoStyle(imageUrl) {
+  smallPhotoStyle() {
+    const photo = this.props.photo
+    const imageUrl = photo.image.thumb ? photo.image.thumb.url : photo.image.url 
     return {
       backgroundImage: 'url(' + imageUrl + ')'
     }
@@ -17,8 +19,10 @@ class SmallPhoto extends React.Component {
   render () {
     return (
       <a href="#" onClick={ this._handleClick }>
-        <div  className="small-image-card z-depth-2"
-              style={ this.smallPhotoStyle(this.props.photo.image.url) }>
+        <div 
+          className="small-image-card z-depth-2"
+          style={ this.smallPhotoStyle() }
+        >
           <span>
             <h5 className="white-text small-photo-date">
               { this.props.date }
