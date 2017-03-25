@@ -1,6 +1,8 @@
 class NavigationHeader extends React.Component {
   constructor(props) {
     super(props)
+
+    this.redirectToLogin = this.redirectToLogin.bind(this);
     this.redirectToPhotos = this.redirectToPhotos.bind(this);
     this.showNewPhoto = this.showNewPhoto.bind(this);
   }
