@@ -1,4 +1,12 @@
 class PhotoList extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.clickHandler = this.clickHandler.bind(this);
+
+  }
+
+
   getPhotosForMonth(date) {
     const splitDate = date.split("-")
     const year = splitDate[0]
@@ -62,7 +70,7 @@ class PhotoList extends React.Component {
             return (
               <SmallPhoto 
                 date={ this.smallPhotoDate(photo) }
-                handleClick={ this.clickHandler.bind(this) }
+                handleClick={ this.clickHandler }
                 key={ photo.id }
                 photo={ photo }
               />

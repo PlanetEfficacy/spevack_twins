@@ -18,7 +18,7 @@ class SmallPhoto extends React.Component {
 
   render () {
     return (
-      <a href="#" onClick={ this._handleClick }>
+      <a href="#" onClick={ this.handleClick }>
         <div 
           className="small-image-card z-depth-2"
           style={ this.smallPhotoStyle() }

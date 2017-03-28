@@ -1,7 +1,6 @@
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this._handleDayClick = this._handleDayClick.bind(this);
     this.state = {
       allPhotos: [],
       photo: {},
@@ -22,7 +21,10 @@ class App extends React.Component {
     this.handleBrowse = this.handleBrowse.bind(this)
     this.handleDeleteComment = this.handleDeleteComment.bind(this)
     this.handleEditComment = this.handleEditComment.bind(this)
+    this.handleDayClick = this.handleDayClick.bind(this)
+    this.handleMonthClick = this.handleMonthClick.bind(this)
     this.handleNewComment = this.handleNewComment.bind(this)
+    this.handleYearClick = this.handleYearClick.bind(this)
   }
 
   componentDidMount() {
@@ -97,7 +99,7 @@ class App extends React.Component {
           filteredPhotos: response,
           componentName:  'PhotoList',
           photoListConfiguration: {
-            handleClick: this.handleYearClick.bind(this),
+            handleClick: this.handleYearClick,
             smallPhotoType: 'year',
             listHeader: 'Browse by Year'
           }
@@ -114,7 +116,7 @@ class App extends React.Component {
           comments: [],
           filteredPhotos: response,
           photoListConfiguration: {
-            handleClick: this.handleMonthClick.bind(this),
+            handleClick: this.handleMonthClick,
             smallPhotoType: 'month',
             listHeader: 'Browse ' + year
           }
@@ -132,7 +134,7 @@ class App extends React.Component {
           filteredPhotos: response,
           componenName: 'PhotoList',
           photoListConfiguration: {
-            handleClick: this._handleDayClick.bind(this),
+            handleClick: this.handleDayClick,
             smallPhotoType: 'day',
             listHeader: `Browse ${properMonth} ${year}`
           }
@@ -141,7 +143,7 @@ class App extends React.Component {
     })
   }
 
-  _handleDayClick(photo) {
+  handleDayClick(photo) {
     this.state.allPhotos.forEach((p, i) => {
       if (p.id === photo.id){
         this.setState(
