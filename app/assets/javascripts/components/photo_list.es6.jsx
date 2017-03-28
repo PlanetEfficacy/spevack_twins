@@ -49,6 +49,7 @@ class PhotoList extends React.Component {
   }
 
   clickHandler(photo) {
+    console.log("CLICK")
     switch (this.props.config.smallPhotoType) {
       case 'year':
         this.props.config.handleClick(this.photoYear(photo))
