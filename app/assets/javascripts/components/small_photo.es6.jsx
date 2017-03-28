@@ -5,6 +5,7 @@ class SmallPhoto extends React.Component {
   }
 
   handleClick() {
+    console.log("small photo click")
     this.props.handleClick(this.props.photo)
   }
 
