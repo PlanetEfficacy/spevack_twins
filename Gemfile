@@ -16,6 +16,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'figaro'
 gem 'rails_12factor', group: :production
 gem 'devise'
+gem 'omniauth-oauth2', '1.3.1'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'

@@ -254,7 +254,10 @@ Devise.setup do |config|
     else
       api_key = ENV["#{provider_name.upcase}_ID"]
       api_secret = ENV["#{provider_name.upcase}_SECRET"]
-      config.omniauth provider_name, api_key, api_secret
+      config.omniauth provider_name, api_key, api_secret unless provider_name == :linkedin
+      if provider_name == :linkedin
+        config.omniauth provider_name, api_key, api_secret, scope: 'r_basicprofile r_emailaddress rw_company_admin w_share', fields: ['id', 'email-address', 'first-name', 'last-name', 'headline', 'location', 'industry', 'picture-url', 'public-profile-url'], secure_image_url: true
+      end
     end
   end
 
