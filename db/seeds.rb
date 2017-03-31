@@ -11,7 +11,7 @@ class DataLoader
   attr_reader :csv, :row
 
   def initialize
-    csv_text = File.read('data/starter.csv')
+    csv_text = File.read('./data/data_to_dl.csv')
     @csv = CSV.parse(csv_text, :headers => true)
   end
 
@@ -36,6 +36,26 @@ class DataLoader
 
     Date.new(year, month, day)
   end
+
+  def upload_photos
+    # counter = 0
+    csv.each do |row|
+     #  if counter <= 5
+      puts "Creating new photo..."
+      file = File.open("./data/photo_#{row['id']}.jpg")
+      photo_params = {
+        title: row['Title'],
+        caption: row['Description'],
+        date: parse_date_from_row(row),
+        image: file
+      }
+      photo = Photo.new(photo_params)
+      photo.save!
+      puts photo.inspect
+       #  counter += 1
+      # end
+    end
+  end
 end
 
-DataLoader.new.load
+DataLoader.new.upload_photos

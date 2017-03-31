@@ -16,6 +16,7 @@ class Photo < ApplicationRecord
   end
 
   def self.one_per_month(year)
+    return where(date: BDAY) if year == "2015"
     where("date IN (?)", first_of_the_month_dates(year)).select('distinct on (date) *')
   end
 
@@ -29,7 +30,14 @@ class Photo < ApplicationRecord
   end
 
   def self.full_month_range(year, month)
-    Date.new(year.to_i, month.to_i, 1)...Date.new(year.to_i, month.to_i + 1, 1)
+    if month == '12'
+      next_month = 1
+      next_year = year.to_i + 1
+    else
+      next_month = month.to_i + 1
+      next_year = year.to_i
+    end
+    Date.new(year.to_i, month.to_i, 1)...Date.new(next_year, next_month, 1)
   end
 
   def self.first_of_the_month_dates(year)
