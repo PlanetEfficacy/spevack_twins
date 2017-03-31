@@ -65,6 +65,17 @@ describe Photo, "#one_per_month(year)", type: :model do
       expect(result.length).to eq(1)
       expect(result.first).to eq(subject)
     end
+
+    it "returns handles 2015 correctly" do 
+      subject = create :photo, date: "2015-12-29"
+      create :photo, date: "2015-12-30"
+      create :photo, date: "2015-12-31"
+
+      result = Photo.one_per_month("2015")
+
+      expect(result.length).to eq(1)
+      expect(result.first).to eq(subject)
+    end
   end
 end
 
@@ -81,6 +92,18 @@ describe Photo, "#by_year_and_month(year, month)", type: :model do
       expect(result.length).to eq(2)
       expect(result.pluck(:date)).to include(Date.new(2016,11,30))
       expect(result.pluck(:date)).to include(Date.new(2016,11,2))
+    end
+
+    it "returns adjusts month and year correctly for december" do
+      create :photo, date: "2016-12-1"
+      create :photo, date: "2016-12-31"
+      create :photo, date: "2017-1-1"
+
+      result = Photo.by_year_and_month("2016", "12")
+
+      expect(result.length).to eq(2)
+      expect(result.pluck(:date)).to include(Date.new(2016,12,1))
+      expect(result.pluck(:date)).to include(Date.new(2016,12,31))
     end
   end
 end
