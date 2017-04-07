@@ -3,7 +3,10 @@ class PhotoList extends React.Component {
     super(props)
 
     this.clickHandler = this.clickHandler.bind(this);
-    this.smallPhotoDate = this.smallPhotoDate.bind(this)
+    this.photoYear = this.photoYear.bind(this);
+    this.photoMonth = this.photoMonth.bind(this);
+    this.getPhotoShow = this.getPhotoShow.bind(this);
+    this.properMonth = this.properMonth.bind(this);
   }
 
 
@@ -37,14 +40,11 @@ class PhotoList extends React.Component {
   smallPhotoDate(photo) {
     switch (this.props.config.smallPhotoType) {
       case 'year':
-        this.photoYear(photo).bind(this)
-        break;
+        return this.photoYear(photo);
       case 'month':
-        this.properMonth(photo.date).bind(this)
-        break;
+        return this.properMonth(photo.date);
       case 'day':
-        photo.date
-        break;
+        return photo.date;
     }
   }
 

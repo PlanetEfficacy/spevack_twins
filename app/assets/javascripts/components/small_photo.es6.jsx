@@ -17,7 +17,6 @@ class SmallPhoto extends React.Component {
   }
 
   render () {
-    console.log("dates: ", this.props.date)
     return (
       <a href="#" onClick={ this.handleClick }>
         <div 
