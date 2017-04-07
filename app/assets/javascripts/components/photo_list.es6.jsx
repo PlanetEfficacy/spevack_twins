@@ -51,14 +51,11 @@ class PhotoList extends React.Component {
   clickHandler(photo) {
     switch (this.props.config.smallPhotoType) {
       case 'year':
-        this.props.config.handleClick(this.photoYear(photo))
-        break;
+        return this.props.config.handleClick(this.photoYear(photo))
       case 'month':
-        this.props.config.handleClick(this.photoYear(photo), this.photoMonth(photo))
-        break;
+        return this.props.config.handleClick(this.photoYear(photo), this.photoMonth(photo))
       case 'day':
-        this.props.config.handleClick(photo)
-        break;
+        return this.props.config.handleClick(photo)
     }
   }
 
@@ -75,7 +72,7 @@ class PhotoList extends React.Component {
                 photo={ photo }
               />
             );
-        }) }
+        }.bind(this)) }
       </div>
     )
   }

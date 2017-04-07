@@ -94,6 +94,7 @@ class App extends React.Component {
 
   handleBrowse() {
     $.getJSON('/api/v1/photos/one-per-year', (response) => {
+      console.log("one-per-year : ", response)
       this.setState(
         {
           filteredPhotos: response,
