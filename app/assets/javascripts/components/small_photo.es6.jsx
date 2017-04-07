@@ -1,11 +1,10 @@
 class SmallPhoto extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    console.log("small photo click")
     this.props.handleClick(this.props.photo)
   }
 
@@ -18,6 +17,7 @@ class SmallPhoto extends React.Component {
   }
 
   render () {
+    console.log("dates: ", this.props.date)
     return (
       <a href="#" onClick={ this.handleClick }>
         <div 
