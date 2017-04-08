@@ -1,7 +1,7 @@
 class NavigationButtons extends React.Component {
   render () {
     return (
-      <div className="row">
+      <div className="nav-buttons row">
         <div className="col m6 offset-m3 s12">
           <div className="left">
             <FlatButton text=""

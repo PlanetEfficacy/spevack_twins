@@ -6,7 +6,7 @@ class MainPhoto extends React.Component {
   render () {
     const photo = this.props.photo;
     return (
-      <div className="main-photo row">
+      <div className="row">
         <div className="col s12 m6 offset-m3">
           <div className="card">
             <div className="card-image">

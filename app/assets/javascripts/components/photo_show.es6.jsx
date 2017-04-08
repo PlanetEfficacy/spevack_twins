@@ -3,12 +3,12 @@ class PhotoShow extends React.Component {
     const photo = this.props.currentPhoto;
     return (
       <div>
-        <MainPhoto 
-          photo={ photo } 
-        />
         <NavigationButtons 
           back={ this.props.back } 
           forward={ this.props.forward } 
+        />
+        <MainPhoto 
+          photo={ photo } 
         />
         <CommentList
           commentable={ photo }
