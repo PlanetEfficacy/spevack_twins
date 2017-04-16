@@ -24,6 +24,8 @@ RSpec.describe User, type: :model do
 
   context "associations" do
     it { should have_many(:comments).dependent(:destroy) }
+    it { should have_many(:favorites).dependent(:destroy) }
+    it { should have_many(:photos).through(:favorites) }
   end
 
   context "administrative priveleges" do

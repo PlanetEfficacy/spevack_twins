@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170223165737) do
+ActiveRecord::Schema.define(version: 20170416020524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,15 @@ ActiveRecord::Schema.define(version: 20170223165737) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "photo_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["photo_id"], name: "index_favorites_on_photo_id", using: :btree
+    t.index ["user_id"], name: "index_favorites_on_user_id", using: :btree
   end
 
   create_table "photos", force: :cascade do |t|
@@ -52,4 +61,6 @@ ActiveRecord::Schema.define(version: 20170223165737) do
   end
 
   add_foreign_key "comments", "users"
+  add_foreign_key "favorites", "photos"
+  add_foreign_key "favorites", "users"
 end

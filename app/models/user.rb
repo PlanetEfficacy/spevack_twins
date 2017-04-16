@@ -7,6 +7,8 @@ class User < ApplicationRecord
                                   *(:developer if Rails.env.development?)]
 
   has_many :comments, dependent: :destroy
+  has_many :favorites, dependent: :destroy 
+  has_many :photos, through: :favorites
 
   validates_uniqueness_of :email
 

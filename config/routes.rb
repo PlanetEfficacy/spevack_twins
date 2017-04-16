@@ -20,12 +20,14 @@ Rails.application.routes.draw do
 
       resources :photos, concerns: :commentable, shallow: true, only: [:index] 
       resources :comments, concerns: :commentable, shallow: true, except: [:new, :edit]
+      resources :favorites, only: [:index, :create, :destroy]
 
       namespace :photos do
         get 'one-per-year',     to: 'one_per_year#index'
         get 'one-per-month',    to: 'one_per_month#index'
         get 'all-month-year',   to: 'all_per_month_year#index'
       end
+ 
     end
   end
 end
