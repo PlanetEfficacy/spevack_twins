@@ -55,20 +55,23 @@ end
 
 describe "DELETE api/v1/favorites/:id", type: :request do
   let(:user) { create :user }
+  let(:favorites) { double }
   let(:favorite) { double }
 
   it "deletes a favorite for a given user" do
-    allow(Favorite).to receive(:find).with('1').and_return(favorite)
+    expect(user).to receive(:favorites).and_return(favorites)
+    expect(favorites).to receive(:find).with('1').and_return(favorite)
     expect(favorite).to receive(:delete)
     sign_in user
 
     delete api_v1_favorite_path('1')
 
-    expect(response).to be_ok
+    expect(response).to have_http_status(204)
   end
 
   it "returns 302 if a user is not signed in" do
-    allow(Favorite).to receive(:find).with('1').and_return(favorite)
+    allow(user).to receive(:favorites).and_return(favorites)
+    allow(favorites).to receive(:find).with('1').and_return(favorite)
     allow(favorite).to receive(:delete)
 
     delete api_v1_favorite_path('1')
