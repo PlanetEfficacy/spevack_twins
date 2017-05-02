@@ -28,6 +28,7 @@ gem 'faker'
 gem 'materialize-sass'
 gem 'react-rails'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'turbolinks', '~> 5.0.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
