@@ -162,23 +162,23 @@ class App extends React.Component {
   render () {
     if (this.state.componentName === "PhotoList") {
       return (
-        <div>
+        <div data-turbolinks="false">
           <NavigationHeader
             handleBrowse={ this.handleBrowse }
             user={ this.props.user }
           />
           <PhotoList
             config={ this.state.photoListConfiguration }
-            photos={ this.state.filteredPhotos } 
+            photos={ this.state.filteredPhotos }
           />
         </div>
       )
     }
     else if (this.state.componentName === "PhotoShow") {
       return (
-        <div>
+        <div data-turbolinks="false">
           <NavigationHeader
-            handleBrowse={ this.handleBrowse } 
+            handleBrowse={ this.handleBrowse }
             user={ this.props.user }
           />
           <PhotoShow
